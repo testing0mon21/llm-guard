@@ -2,13 +2,14 @@ import re
 import random
 import unicodedata
 import hashlib
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 from llm_guard.util import get_logger
 from llm_guard.vault import Vault
 
 from .base import Scanner
 from .code import Code
+from .semantic_rename_helpers import SemanticIdentifierRenamer
 
 LOGGER = get_logger()
 
@@ -99,6 +100,7 @@ class CodeObfuscator(Scanner):
     1. Замена ASCII-символов на гомоглифы из других алфавитов
     2. Добавление невидимых Unicode-символов
     3. Комбинирование этих подходов
+    4. Семантическое переименование идентификаторов с сохранением подсказок
     
     При этом сохраняется структура кода и его понимание для LLM-моделей.
     
@@ -111,6 +113,9 @@ class CodeObfuscator(Scanner):
         invisible_char_probability: float = 0.3,
         identifier_modification_probability: float = 0.4,
         preserve_keywords: bool = True,
+        semantic_rename: bool = False,
+        semantic_preservation_level: float = 0.7,
+        domain: str = "general",
         code_detector = None,
         enable_vault: bool = False,
         vault: Vault = None
@@ -123,6 +128,10 @@ class CodeObfuscator(Scanner):
             invisible_char_probability: Вероятность добавления невидимого символа (0-1)
             identifier_modification_probability: Вероятность модификации идентификаторов (0-1)
             preserve_keywords: Сохранять ли ключевые слова языков программирования без изменений
+            semantic_rename: Использовать ли семантическое переименование идентификаторов
+            semantic_preservation_level: Уровень сохранения семантики (0.0-1.0)
+                где 0.0 - полная обфускация, 1.0 - максимальное сохранение семантики
+            domain: Предметная область кода (finance, medical, web, general)
             code_detector: Опциональный детектор кода, если None - будет использован встроенный Code
             enable_vault: Включить сохранение оригинального кода для деобфускации
             vault: Объект Vault для хранения оригинального кода, если None - создается новый
@@ -131,6 +140,9 @@ class CodeObfuscator(Scanner):
         self._invisible_char_probability = invisible_char_probability
         self._identifier_modification_probability = identifier_modification_probability
         self._preserve_keywords = preserve_keywords
+        self._semantic_rename = semantic_rename
+        self._semantic_preservation_level = semantic_preservation_level
+        self._domain = domain
         self._enable_vault = enable_vault
         
         # Инициализация хранилища для сохранения оригинального кода
@@ -138,6 +150,16 @@ class CodeObfuscator(Scanner):
             self._vault = vault if vault is not None else Vault()
         else:
             self._vault = None
+        
+        # Инициализация семантического переименователя, если включено
+        if semantic_rename:
+            self._semantic_renamer = SemanticIdentifierRenamer(
+                domain=domain,
+                semantic_preservation_level=semantic_preservation_level,
+                preserve_keywords=preserve_keywords
+            )
+        else:
+            self._semantic_renamer = None
         
         # Популярные ключевые слова в разных языках программирования
         self._keywords = {
@@ -220,8 +242,14 @@ class CodeObfuscator(Scanner):
     
     def _obfuscate_code(self, code: str) -> str:
         """Применяет все методы обфускации к фрагменту кода"""
-        # Комбинируем различные техники обфускации
-        code = self._modify_identifiers(code)
+        # Если включено семантическое переименование, применяем его
+        if self._semantic_rename and self._semantic_renamer:
+            code = self._semantic_renamer.rename_identifiers_in_code(code)
+        else:
+            # Иначе используем базовое переименование идентификаторов
+            code = self._modify_identifiers(code)
+        
+        # Применяем другие методы обфускации
         code = self._apply_homoglyphs(code)
         code = self._add_invisible_chars(code)
         
@@ -345,6 +373,7 @@ class CodeObfuscator(Scanner):
         result = ""
         if code_blocks:
             current_pos = 0
+            block_idx = 0
             for block_idx, (obfuscated, start, end) in enumerate(code_blocks):
                 # Добавляем текст перед блоком кода
                 if block_idx < len(non_code_blocks):
