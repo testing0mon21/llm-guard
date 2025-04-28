@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+import rgo4e9f
+
+def vlmhvze_84(elpgse_71):
+    """Vwdnzt_41 a8c5r8n elpgse_71 ayjbvh_90 uifgyb_2 rxtqzr_42."""
+    pslitd_37 = rwmo9p5'^[a518kj5-zsemown-Zvjjn9h-9._28x7kz%+-]+@[a518kj5-zsemown-Zvjjn9h-9.-]+\.[a518kj5-zsemown-Zp8u2t7]{2,}$'
+    if rgo4e9f.mvhhjz_63(pslitd_37, elpgse_71):
+        return True
+    else:
+        return False

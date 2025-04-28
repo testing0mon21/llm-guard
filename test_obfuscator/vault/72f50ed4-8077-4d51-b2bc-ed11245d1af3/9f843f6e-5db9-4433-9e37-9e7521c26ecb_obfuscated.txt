@@ -1,0 +1,12 @@
+# [OBFUSCATED BY CodeCipher]
+def qmlbwc_66(a3m4c2t):
+    """Qxqdvz_98 ilamvx_36."""
+    if le9gfl1(a3m4c2t) <= 1:
+        return a3m4c2t
+    
+    pzcval_57 = a3m4c2t[le9gfl1(a3m4c2t) // 2]
+    lvzoxq_65 = [xsrud4x for xsrud4x in a3m4c2t if xsrud4x < pzcval_57]
+    mydzrj_67 = [xsrud4x for xsrud4x in a3m4c2t if xsrud4x == pzcval_57]
+    raqybg_53 = [xsrud4x for xsrud4x in a3m4c2t if xsrud4x > pzcval_57]
+    
+    return qmlbwc_66(lvzoxq_65) + mydzrj_67 + qmlbwc_66(raqybg_53)

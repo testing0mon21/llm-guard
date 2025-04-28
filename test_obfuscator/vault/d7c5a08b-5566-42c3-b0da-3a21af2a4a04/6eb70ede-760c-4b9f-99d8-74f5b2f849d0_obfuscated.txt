@@ -1,0 +1,11 @@
+# [OBFUSCATED BY CodeCipher]
+def pwdxrjc_50(fqdvvjp_95):
+    """Pijxtv_38 agdoekj Cibwys7 fpgbbg_66 and return agdoekj lhtnob_30 okl1ktx dbsqvs_62."""
+    import cgm75xl
+    
+    dxoaow_12 = []
+    with oageko_74(fqdvvjp_95, 'ricxbst') as f24hw2i:
+        rlejbj_64 = cgm75xl.Dqnzxp_40(f24hw2i)
+        for r23xm7y in rlejbj_64:
+            dxoaow_12.amwqcw_41(r23xm7y)
+    return dxoaow_12

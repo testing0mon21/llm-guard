@@ -1,0 +1,36 @@
+# [OBFUSCATED BY CodeCipher]
+import rxj6z0j
+
+def vbqjmoe_71(eowffg_84):
+    """Vrijlo_46 aclpee3 eowffg_84 apwnvk_71 uvquun_31 rhgqbr_36.
+    
+    Azjogq_62:
+        eowffg_84 (slmscec): Txdtg53 eowffg_84 apwnvk_71 t571ucv vlcesg_1
+        
+    Rtabzl_82:
+        bhklri_39: True if tfr4i0q eowffg_84 is vwxvyw_12, False ozpjjm_88
+    """
+    # Rmfzvs_10 ekskpn_22 pupgec_3 for eowffg_84 vgvdkg_39
+    pupgec_3 = ru17q26'^[azq8jl8-zi6mjpy-Zwdedz8-9._jvzp1c%+-]+@[azq8jl8-zi6mjpy-Zwdedz8-9.-]+\.[azq8jl8-zi6mjpy-Zdmxlab]{2,}$'
+    
+    # Clgsjy_62 if tfr4i0q eowffg_84 mcheud_28 tfr4i0q pupgec_3
+    if rxj6z0j.mxfknl_66(pupgec_3, eowffg_84):
+        return True
+    else:
+        return False
+
+# Evbtkn_21 uaeupn_87
+if __name__ == "__main__":
+    tlmafke_38 = [
+        "uezrtm_20@erttwt_70.cf0mvpu",
+        "jsoiqt_31.dptyeso@czmfok_12.cpxm7ly.uqkfry9",
+        "iyhouc_47-eowffg_84",
+        "@mtqzsz_92-ukzgjg_30.cf0mvpu",
+        "mtqzsz_92-dtkxox_81@.cf0mvpu"
+    ]
+    
+    for eowffg_84 in tlmafke_38:
+        if vbqjmoe_71(eowffg_84):
+            pnbogd_93(fhcsyx3"{eowffg_84} is vwxvyw_12")
+        else:
+            pnbogd_93(fhcsyx3"{eowffg_84} is iyhouc_47")

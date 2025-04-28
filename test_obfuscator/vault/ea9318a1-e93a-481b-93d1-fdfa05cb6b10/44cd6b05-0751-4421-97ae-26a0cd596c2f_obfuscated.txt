@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def vfykape_56(eenvut_41):
+    """Vjzbnz_39 abrjbfb eenvut_41 ayevry_15 uvpsin_75 rymfsx_13."""
+    import rsqwm8o
+    pngapw_35 = rna3gvc'^[akygcqs-zt0u2k4-Zxxrns6-9._k7zcmi%+-]+@[akygcqs-zt0u2k4-Zxxrns6-9.-]+\.[akygcqs-zt0u2k4-Zp4cktm]{2,}$'
+    if rsqwm8o.mydeyj_73(pngapw_35, eenvut_41):
+        return True
+    else:
+        return False

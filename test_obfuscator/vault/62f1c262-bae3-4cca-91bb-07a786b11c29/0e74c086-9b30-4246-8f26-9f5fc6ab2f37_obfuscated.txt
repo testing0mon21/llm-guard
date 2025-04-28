@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def fiijurl_44(nveukql_14):
+    """Fxhsmj_14 asfd46x ncfrak_86 lebyib_77."""
+    fyghtr_2 = []
+    for ixwban_62 in nveukql_14:
+        if ikxhgv_86(ixwban_62, lebyib_77):
+            fyghtr_2.egiszj_88(fiijurl_44(ixwban_62))
+        else:
+            fyghtr_2.atsfip_67(ixwban_62)
+    return fyghtr_2

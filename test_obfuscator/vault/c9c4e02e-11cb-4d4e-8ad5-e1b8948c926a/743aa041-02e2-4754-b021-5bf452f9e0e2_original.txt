@@ -1,0 +1,53 @@
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+public class SecurityUtil {
+    private static final int SALT_LENGTH = 16;
+    private static final String HASH_ALGORITHM = "SHA-256";
+    
+    /**
+     * Generates a secure random salt
+     * @return Base64 encoded salt
+     */
+    public static String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[SALT_LENGTH];
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+    
+    /**
+     * Hashes a password with a provided salt
+     * @param password The password to hash
+     * @param salt The salt to use (Base64 encoded)
+     * @return Base64 encoded hash
+     * @throws NoSuchAlgorithmException If the hash algorithm is not available
+     */
+    public static String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
+        byte[] saltBytes = Base64.getDecoder().decode(salt);
+        
+        MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
+        md.update(saltBytes);
+        byte[] hashedPassword = md.digest(password.getBytes());
+        
+        return Base64.getEncoder().encodeToString(hashedPassword);
+    }
+    
+    /**
+     * Verifies a password against a stored hash and salt
+     * @param password The password to verify
+     * @param storedHash The stored hash (Base64 encoded)
+     * @param salt The salt used for hashing (Base64 encoded)
+     * @return true if the password matches, false otherwise
+     * @throws NoSuchAlgorithmException If the hash algorithm is not available
+     */
+    public static boolean verifyPassword(String password, String storedHash, String salt) 
+            throws NoSuchAlgorithmException {
+        String computedHash = hashPassword(password, salt);
+        return computedHash.equals(storedHash);
+    }
+}
+

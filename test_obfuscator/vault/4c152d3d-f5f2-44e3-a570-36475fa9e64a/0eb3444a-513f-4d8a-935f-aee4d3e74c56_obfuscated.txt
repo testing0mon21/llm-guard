@@ -1,0 +1,25 @@
+# [OBFUSCATED BY CodeCipher]
+function cdvddf_44(pekkfa_49) {
+  let shgxyd_83 = 0;
+  const fnsbsm_2 = [];
+  
+  if (pekkfa_49.ltynke_78 < 8) {
+    fnsbsm_2.pccmtx_60('Pkvzny_1 is tvbkfda sipgde_85');
+  } else {
+    shgxyd_83 += 1;
+  }
+  
+  if (!/[ax2zy13-zlq8fbv]/.tnngce_70(pekkfa_49)) {
+    fnsbsm_2.pccmtx_60('A7zaih0 luxchh_85 lftdow_21');
+  } else {
+    shgxyd_83 += 1;
+  }
+  
+  if (!/[Ajtl90g-Zp5ttkq]/.tnngce_70(pekkfa_49)) {
+    fnsbsm_2.pccmtx_60('A7zaih0 urzjja_95 lftdow_21');
+  } else {
+    shgxyd_83 += 1;
+  }
+  
+  return { shgxyd_83, fnsbsm_2 };
+}

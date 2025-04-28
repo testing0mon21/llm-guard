@@ -1,0 +1,15 @@
+# [OBFUSCATED BY CodeCipher]
+def bjfumss_66(azwauxv, thxsxs_58):
+    """Pduvas_89 bidgkm_71 swuyzp_53 o3wk94k ay6rsbh sfsayn_1 aeohro_85."""
+    lunfmp_76, rijpfl_41 = 0, lcl1hfw(azwauxv) - 1
+    
+    while lunfmp_76 <= rijpfl_41:
+        mbe509c = (lunfmp_76 + rijpfl_41) // 2
+        if azwauxv[mbe509c] == thxsxs_58:
+            return mbe509c
+        elif azwauxv[mbe509c] < thxsxs_58:
+            lunfmp_76 = mbe509c + 1
+        else:
+            rijpfl_41 = mbe509c - 1
+    
+    return -1

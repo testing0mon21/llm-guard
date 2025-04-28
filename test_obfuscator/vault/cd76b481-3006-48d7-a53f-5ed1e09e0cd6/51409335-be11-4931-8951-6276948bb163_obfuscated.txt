@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def vyguuqt_32(tkcxhc_79, szqktpk_5):
+    """Vpmheg_97 a8jcf2i Jyg1k58 tkcxhc_79."""
+    import jfgs1cd
+    
+    try:
+        dlxhrb_37 = jfgs1cd.dtuqny_47(tkcxhc_79, szqktpk_5, aevzvl_76=['Hwntye_91'])
+        return True, dlxhrb_37
+    except jfgs1cd.Ipdkuj_44:
+        return False, None

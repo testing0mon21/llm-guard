@@ -1,15 +1,14 @@
 # Start from an NVIDIA CUDA base image with Python 3
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+FROM nvcr.io/nvidia/cuda:12.1.0-runtime-ubuntu22.04 as base
 
 LABEL org.opencontainers.image.source=https://github.com/protectai/llm-guard
 LABEL org.opencontainers.image.description="LLM Guard API"
 LABEL org.opencontainers.image.licenses=MIT
 
 # Install Python and other necessary packages
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    python3-dev \
-    build-essential \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-pip python3-setuptools python3-distutils \
+    build-essential curl git openjdk-17-jre-headless \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Alias python3 to python
@@ -31,19 +30,37 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
 # Set up a working directory
-WORKDIR $HOME/app
+WORKDIR /app
 
 # Copy pyproject.toml and other necessary files for installation
 COPY --chown=user:user pyproject.toml ./
 COPY --chown=user:user app ./app
+COPY --chown=user:user generate_antlr_grammars.sh ./
 
 # Install the project's dependencies
 RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir ".[gpu]"
+    pip3 install --no-cache-dir ".[gpu]" && \
+    python3 -m spacy download en_core_web_sm && \
+    chmod +x ./generate_antlr_grammars.sh && \
+    ./generate_antlr_grammars.sh && \
+    pip3 install --no-cache-dir antlr4-python3-runtime==4.9.3
 
-RUN python -m spacy download en_core_web_sm
-
+# Копируем конфигурацию и скрипт для предзагрузки моделей
 COPY --chown=user:user ./config/scanners.yml ./config/scanners.yml
+COPY --chown=user:user preload_models.py ./preload_models.py
+
+# Устанавливаем PyYAML для работы скрипта предзагрузки
+RUN pip install --no-cache-dir pyyaml
+
+# Предварительная загрузка моделей во время сборки образа
+RUN echo "Начинаем предварительную загрузку моделей..." && \
+    python preload_models.py && \
+    echo "Предварительная загрузка моделей завершена"
+
+# Создаем директорию для кэша моделей и делаем её постоянной
+RUN mkdir -p $HOME/.cache/huggingface
+VOLUME $HOME/.cache/huggingface
+
 COPY --chown=user:user entrypoint.sh ./entrypoint.sh
 
 RUN chmod +x ./entrypoint.sh

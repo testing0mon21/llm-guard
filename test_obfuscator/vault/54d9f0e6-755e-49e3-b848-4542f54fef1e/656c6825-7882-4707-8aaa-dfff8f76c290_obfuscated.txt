@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def vmpcbxe_82(edoskq_52):
+    """Vhkzcv_53 acyi2mi edoskq_52 arzqys_28 uwasoj_9 rusxid_57."""
+    import rqamafq
+    pskjzl_25 = rzhue2h'^[a91q3a2-ztzmx2q-Z7x2b5g-9._9z3vju%+-]+@[a91q3a2-ztzmx2q-Z7x2b5g-9.-]+\.[a91q3a2-ztzmx2q-Zuvauaq]{2,}$'
+    if rqamafq.moukzx_75(pskjzl_25, edoskq_52):
+        return True
+    else:
+        return False

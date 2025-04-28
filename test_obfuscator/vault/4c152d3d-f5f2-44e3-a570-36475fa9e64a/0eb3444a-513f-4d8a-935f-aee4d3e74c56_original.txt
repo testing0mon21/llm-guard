@@ -1,0 +1,24 @@
+function checkPasswordStrength(password) {
+  let score = 0;
+  const feedback = [];
+  
+  if (password.length < 8) {
+    feedback.push('Password is too short');
+  } else {
+    score += 1;
+  }
+  
+  if (!/[a-z]/.test(password)) {
+    feedback.push('Add lowercase letters');
+  } else {
+    score += 1;
+  }
+  
+  if (!/[A-Z]/.test(password)) {
+    feedback.push('Add uppercase letters');
+  } else {
+    score += 1;
+  }
+  
+  return { score, feedback };
+}

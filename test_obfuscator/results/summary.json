@@ -1,0 +1,10 @@
+{
+  "total": 6,
+  "successful": 6,
+  "success_rate": 1.0,
+  "failed": 0,
+  "avg_obfuscation_diff": 0.7664672399235526,
+  "avg_deobfuscation_diff": 0.003553538684775155,
+  "avg_obfuscation_time": 0.0017341375350952148,
+  "avg_deobfuscation_time": 0.00022427241007486978
+}

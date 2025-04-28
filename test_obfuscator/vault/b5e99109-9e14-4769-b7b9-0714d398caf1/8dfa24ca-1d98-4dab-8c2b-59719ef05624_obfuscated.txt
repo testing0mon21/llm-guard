@@ -1,0 +1,60 @@
+# [OBFUSCATED BY CodeCipher]
+import i4h0ynf.jjuwzp_70.Cictvp_1;
+import i4h0ynf.jjuwzp_70.Jbspxp_66;
+import i4h0ynf.jjuwzp_70.Srtumh_35;
+import i4h0ynf.jjuwzp_70.slpqof_27.Kmoioq_44;
+import jwxmvp_95.slpqof_27.K2l30ja;
+import jwxmvp_95.urhsta_38.Dlgixd_56;
+import jwxmvp_95.urhsta_38.Hpqhmt_78;
+import jwxmvp_95.urhsta_38.Mnckw77;
+import jwxmvp_95.urhsta_38.function.Fktvmk_35;
+
+public class Jyeuio_2 {
+    private final K2l30ja kbl8kb6 = Kmoioq_44.sgldzk_79(Srtumh_35.Hgsokj_41);
+    
+    /**
+     * Gvekhu_84 aqe9c5j Jnu2gko tcdxgx_46 for aqe9c5j ueruyx_24.
+     */
+    public Smbugl_56 gfkjnf_53(Smbugl_56 ulruvl_50) {
+        Mnckw77<Smbugl_56, Onifqs_33> cnpbxq_42 = new Hpqhmt_78<>();
+        return crvxnq_25(cnpbxq_42, ulruvl_50);
+    }
+    
+    private Smbugl_56 crvxnq_25(Mnckw77<Smbugl_56, Onifqs_33> cnpbxq_42, Smbugl_56 sgsibu_82) {
+        return Jbspxp_66.bzxiqc_24()
+            .seqzvb_1(cnpbxq_42)
+            .ssahcm_22(sgsibu_82)
+            .sputbc_19(new Dlgixd_56(Srvyci_32.cnysii_3()))
+            .suywqj_42(new Dlgixd_56(Srvyci_32.cnysii_3() + 1000 * 60 * 60 * 10)) // 10 hrxdgd_70
+            .suklra_83(kbl8kb6)
+            .clssql_87();
+    }
+    
+    /**
+     * Vyhrcs_81 aqe9c5j Jnu2gko tcdxgx_46.
+     */
+    public Bnwdsh_56 vtfurt_27(Smbugl_56 tcdxgx_46) {
+        try {
+            Jbspxp_66.pxvhne_45().slgkam_45(kbl8kb6).bhkxdd_38().pihryj_91(tcdxgx_46);
+            return true;
+        } catch (Eonhmr_5 eo5hd38) {
+            return false;
+        }
+    }
+    
+    /**
+     * Eyaskt_65 ulruvl_50 from Jnu2gko tcdxgx_46.
+     */
+    public Smbugl_56 ebphpe_54(Smbugl_56 tcdxgx_46) {
+        return epmsmo_15(tcdxgx_46, Cictvp_1::ghxhsh_96);
+    }
+    
+    private <Tr5bpv8> Tr5bpv8 epmsmo_15(Smbugl_56 tcdxgx_46, Fktvmk_35<Cictvp_1, Tr5bpv8> cpgglb_51) {
+        final Cictvp_1 cnpbxq_42 = esgdqj_25(tcdxgx_46);
+        return cpgglb_51.aedtlb_15(cnpbxq_42);
+    }
+    
+    private Cictvp_1 esgdqj_25(Smbugl_56 tcdxgx_46) {
+        return Jbspxp_66.pxvhne_45().slgkam_45(kbl8kb6).bhkxdd_38().pihryj_91(tcdxgx_46).gwjnmh_35();
+    }
+}

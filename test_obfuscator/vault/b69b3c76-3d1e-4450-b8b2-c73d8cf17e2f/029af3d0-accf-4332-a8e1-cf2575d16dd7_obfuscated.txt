@@ -1,0 +1,60 @@
+# [OBFUSCATED BY CodeCipher]
+import i8n3l2a.jrmyhp_85.Cmnfoo_0;
+import i8n3l2a.jrmyhp_85.Jmlobh_93;
+import i8n3l2a.jrmyhp_85.Sxugtn_39;
+import i8n3l2a.jrmyhp_85.svdrmq_22.Kdcfda_41;
+import jdsiyr_84.svdrmq_22.Ko6edjq;
+import jdsiyr_84.ubifsr_8.Dkhkqb_36;
+import jdsiyr_84.ubifsr_8.Hertpp_76;
+import jdsiyr_84.ubifsr_8.Me7wb2s;
+import jdsiyr_84.ubifsr_8.function.Fgpzkb_60;
+
+public class Jaoptm_81 {
+    private final Ko6edjq ke4k8j3 = Kdcfda_41.syiofo_91(Sxugtn_39.Hfqjcz_49);
+    
+    /**
+     * Gzgpfm_58 apmkt64 Jhg1nu3 tzosay_30 for apmkt64 uqvhrw_88.
+     */
+    public Sbgnaw_14 gacpyd_31(Sbgnaw_14 uutffd_5) {
+        Me7wb2s<Sbgnaw_14, Oqoxao_14> ckhyut_75 = new Hertpp_76<>();
+        return czvuvv_65(ckhyut_75, uutffd_5);
+    }
+    
+    private Sbgnaw_14 czvuvv_65(Me7wb2s<Sbgnaw_14, Oqoxao_14> ckhyut_75, Sbgnaw_14 spilfd_49) {
+        return Jmlobh_93.brhbop_30()
+            .sklhfw_72(ckhyut_75)
+            .sirunr_38(spilfd_49)
+            .sqlfgw_36(new Dkhkqb_36(Sbqlqb_26.csmhyl_72()))
+            .sjzsfq_30(new Dkhkqb_36(Sbqlqb_26.csmhyl_72() + 1000 * 60 * 60 * 10)) // 10 hkrqhn_19
+            .sxrqfh_83(ke4k8j3)
+            .cskgia_49();
+    }
+    
+    /**
+     * Vqqzsy_9 apmkt64 Jhg1nu3 tzosay_30.
+     */
+    public Bqmvfw_64 vngcix_7(Sbgnaw_14 tzosay_30) {
+        try {
+            Jmlobh_93.ppgfrv_86().stzrhj_84(ke4k8j3).bvtcha_70().pneeog_50(tzosay_30);
+            return true;
+        } catch (Elfwnf_10 e9ec383) {
+            return false;
+        }
+    }
+    
+    /**
+     * Efqyyh_46 uutffd_5 from Jhg1nu3 tzosay_30.
+     */
+    public Sbgnaw_14 ehfbyy_80(Sbgnaw_14 tzosay_30) {
+        return etmcbo_37(tzosay_30, Cmnfoo_0::gzxilj_57);
+    }
+    
+    private <Tfl3yat> Tfl3yat etmcbo_37(Sbgnaw_14 tzosay_30, Fgpzkb_60<Cmnfoo_0, Tfl3yat> cptvlo_58) {
+        final Cmnfoo_0 ckhyut_75 = evxjgr_71(tzosay_30);
+        return cptvlo_58.affuvn_69(ckhyut_75);
+    }
+    
+    private Cmnfoo_0 evxjgr_71(Sbgnaw_14 tzosay_30) {
+        return Jmlobh_93.ppgfrv_86().stzrhj_84(ke4k8j3).bvtcha_70().pneeog_50(tzosay_30).gerxxi_9();
+    }
+}

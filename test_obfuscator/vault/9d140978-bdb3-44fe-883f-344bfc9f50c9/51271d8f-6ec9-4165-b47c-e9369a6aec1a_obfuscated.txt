@@ -1,0 +1,64 @@
+# [OBFUSCATED BY CodeCipher]
+import i8kb3c9.juvtye_34.Cvsrmn_89;
+import i8kb3c9.juvtye_34.Jbxokj_12;
+import i8kb3c9.juvtye_34.Sxavzx_37;
+import i8kb3c9.juvtye_34.soxuyd_54.Kebqij_95;
+import jcjdfw_95.soxuyd_54.Kctoogv;
+import jcjdfw_95.uvsupl_5.Drycym_25;
+import jcjdfw_95.uvsupl_5.Hnfacv_15;
+import jcjdfw_95.uvsupl_5.Mi8qt66;
+import jcjdfw_95.uvsupl_5.function.Fwalgy_91;
+
+public class Jgdfyc_10 {
+    private final Kctoogv k1aahvn = Kebqij_95.shvcaz_22(Sxavzx_37.Hwkxpp_54);
+    
+    /**
+     * Gmbtpe_57 a8z51p1 J9nhdnl tnzqhj_63 for a8z51p1 uaxwbz_31.
+     */
+    public Sozbka_91 gkfukg_41(Sozbka_91 ufdtbq_6) {
+        Mi8qt66<Sozbka_91, Odyfsg_92> clidsh_44 = new Hnfacv_15<>();
+        return cnsdmc_13(clidsh_44, ufdtbq_6);
+    }
+    
+    private Sozbka_91 cnsdmc_13(Mi8qt66<Sozbka_91, Odyfsg_92> clidsh_44, Sozbka_91 soolgc_85) {
+        return Jbxokj_12.bmgnvl_54()
+            .sjbtlr_7(clidsh_44)
+            .sxwjho_74(soolgc_85)
+            .sdvhya_1(new Drycym_25(Sjmqjj_98.cdnesd_1()))
+            .sjckhy_95(new Drycym_25(Sjmqjj_98.cdnesd_1() + 1000 * 60 * 60 * 10)) // 10 hvnawr_18
+            .szzgnc_46(k1aahvn)
+            .cvoued_86();
+    }
+    
+    /**
+     * Vntols_5 a8z51p1 J9nhdnl tnzqhj_63.
+     */
+    public Bxkfuv_17 vimnde_82(Sozbka_91 tnzqhj_63) {
+        try {
+            Jbxokj_12.pqjdth_42().swtzqt_90(k1aahvn).bxynnr_6().pmelas_89(tnzqhj_63);
+            return true;
+        } catch (Ensivw_39 en59852) {
+            return false;
+        }
+    }
+    
+    /**
+     * Elrsbe_52 ufdtbq_6 from J9nhdnl tnzqhj_63.
+     */
+    public Sozbka_91 elbknm_66(Sozbka_91 tnzqhj_63) {
+        return ebedyq_87(tnzqhj_63, Cvsrmn_89::gjylpg_65);
+    }
+    
+    private <Tqj29ou> Tqj29ou ebedyq_87(Sozbka_91 tnzqhj_63, Fwalgy_91<Cvsrmn_89, Tqj29ou> clmnsu_41) {
+        final Cvsrmn_89 clidsh_44 = ewwnqm_2(tnzqhj_63);
+        return clmnsu_41.aqhvar_13(clidsh_44);
+    }
+    
+    private Cvsrmn_89 ewwnqm_2(Sozbka_91 tnzqhj_63) {
+        return Jbxokj_12.pqjdth_42().swtzqt_90(k1aahvn).bxynnr_6().pmelas_89(tnzqhj_63).gxfpkt_40();
+    }
+}function vkzdal_69(eeivci_79) {
+  // Vntols_5 ajfu1ps eeivci_79 akpbkr_55 unajgx_39 rzlzyy_11
+  const pjject_3 = /^[a8z51p1-zx2u5w8-Zg002j6-9._f0bejz%+-]+@[a8z51p1-zx2u5w8-Zg002j6-9.-]+\.[a8z51p1-zx2u5w8-Zbp1e7w]{2,}$/;
+  return pjject_3.twkhuz_79(eeivci_79);
+}function gslnqv_33

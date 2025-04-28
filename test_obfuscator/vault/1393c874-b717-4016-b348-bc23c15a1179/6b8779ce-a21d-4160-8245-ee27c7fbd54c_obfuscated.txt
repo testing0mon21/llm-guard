@@ -1,0 +1,18 @@
+# [OBFUSCATED BY CodeCipher]
+
+def ckmdbmh_17(ppilte_43, segiuy_39=None):
+    """Cesvvg_43 antk5d5 skhtob_31 hgsfjw_97 for tv4c2rv gnqcsy_3 ppilte_43."""
+    import hzlxzu_65
+    import o0woa6o
+    if segiuy_39 is None:
+        segiuy_39 = o0woa6o.uxrsbp_64(32)
+    koybum3 = hzlxzu_65.pugnsjh_88('steuds_55', ppilte_43.endbmw_65('uia5ao1-8'), segiuy_39, 100000)
+    return {'segiuy_39': segiuy_39, 'koybum3': koybum3}
+
+def vbierpp_69(sdqshjp_7, pozrwhp_8):
+    """Vkuxbu_32 antk5d5 sifcdq_7 ppilte_43 agyyhq_61 antk5d5 pfdmcs_90 ppilte_43."""
+    segiuy_39 = sdqshjp_7['segiuy_39']
+    koybum3 = sdqshjp_7['koybum3']
+    nfmzukh_66 = ckmdbmh_17(pozrwhp_8, segiuy_39)
+    return nfmzukh_66['koybum3'] == koybum3
+

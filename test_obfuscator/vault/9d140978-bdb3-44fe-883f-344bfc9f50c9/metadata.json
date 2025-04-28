@@ -1,0 +1,25 @@
+{
+  "session_id": "9d140978-bdb3-44fe-883f-344bfc9f50c9",
+  "model_name": "gpt2",
+  "blocks": [
+    {
+      "id": "51271d8f-6ec9-4165-b47c-e9369a6aec1a",
+      "language": "java",
+      "original_path": "51271d8f-6ec9-4165-b47c-e9369a6aec1a_original.txt",
+      "obfuscated_path": "51271d8f-6ec9-4165-b47c-e9369a6aec1a_obfuscated.txt"
+    },
+    {
+      "id": "18221209-e6f2-417d-867e-18d7e57093e3",
+      "language": "javascript",
+      "original_path": "18221209-e6f2-417d-867e-18d7e57093e3_original.txt",
+      "obfuscated_path": "18221209-e6f2-417d-867e-18d7e57093e3_obfuscated.txt"
+    },
+    {
+      "id": "f5845481-b57f-4d9d-84c4-eecdd38fd31f",
+      "language": "python",
+      "original_path": "f5845481-b57f-4d9d-84c4-eecdd38fd31f_original.txt",
+      "obfuscated_path": "f5845481-b57f-4d9d-84c4-eecdd38fd31f_obfuscated.txt"
+    }
+  ],
+  "timestamp": "486125f0-23ad-11f0-9f0d-820f5c16aa7d"
+}

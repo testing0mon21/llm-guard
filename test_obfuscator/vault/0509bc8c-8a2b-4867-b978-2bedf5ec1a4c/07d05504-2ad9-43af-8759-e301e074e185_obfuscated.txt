@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def fxiuea_44(n8xih53, mwsyvn_24={}):
+    """Cnsubk_9 ttzak8h n0sva35 Fxnesq_31 ntbiio_73 ueiezn_80 mlcozc_2."""
+    if n8xih53 in mwsyvn_24:
+        return mwsyvn_24[n8xih53]
+    if n8xih53 <= 2:
+        return 1
+    
+    mwsyvn_24[n8xih53] = fxiuea_44(n8xih53-1, mwsyvn_24) + fxiuea_44(n8xih53-2, mwsyvn_24)
+    return mwsyvn_24[n8xih53]

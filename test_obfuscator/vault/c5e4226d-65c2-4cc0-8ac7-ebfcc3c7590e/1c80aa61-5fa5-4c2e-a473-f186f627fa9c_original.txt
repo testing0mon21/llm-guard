@@ -1,0 +1,92 @@
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+
+/**
+ * Utility class for handling JWT tokens
+ */
+public class JwtTokenUtil {
+
+    private final Key secretKey;
+    private final long expirationTimeInMs;
+
+    /**
+     * Constructor for JwtTokenUtil
+     * 
+     * @param secretKeyString The secret key to use for signing tokens
+     * @param expirationTimeInMs The expiration time in milliseconds
+     */
+    public JwtTokenUtil(String secretKeyString, long expirationTimeInMs) {
+        // Generate a secure key for HS256 algorithm
+        this.secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes());
+        this.expirationTimeInMs = expirationTimeInMs;
+    }
+
+    /**
+     * Generates a JWT token for a user
+     * 
+     * @param username The username to include in the token
+     * @param additionalClaims Additional claims to include in the token
+     * @return The generated JWT token string
+     */
+    public String generateToken(String username, Map<String, Object> additionalClaims) {
+        Map<String, Object> claims = new HashMap<>();
+        if (additionalClaims != null) {
+            claims.putAll(additionalClaims);
+        }
+        return createToken(claims, username);
+    }
+
+    /**
+     * Validates a JWT token
+     * 
+     * @param token The token to validate
+     * @return true if the token is valid, false otherwise
+     */
+    public boolean validateToken(String token) {
+        try {
+            // Parse the token and check if it's expired
+            Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Extracts the username from a JWT token
+     * 
+     * @param token The token to extract the username from
+     * @return The username extracted from the token
+     */
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+            .setSigningKey(secretKey)
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+        return claims.getSubject();
+    }
+
+    private String createToken(Map<String, Object> claims, String subject) {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + expirationTimeInMs);
+
+        return Jwts.builder()
+            .setClaims(claims)
+            .setSubject(subject)
+            .setIssuedAt(now)
+            .setExpiration(expirationDate)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
+            .compact();
+    }
+}

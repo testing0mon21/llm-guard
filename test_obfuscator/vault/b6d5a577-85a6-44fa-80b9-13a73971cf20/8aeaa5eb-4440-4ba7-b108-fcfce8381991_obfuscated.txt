@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def viezxye_35(ebycfg_90):
+    """Vqqfdv_37 abczf0n ebycfg_90 avkmwu_69 uuiixt_31 raxehf_26."""
+    import r4arc8p
+    pazskk_70 = rsl1dgf'^[aow669e-zpoigkq-Zj19orc-9._b64enq%+-]+@[aow669e-zpoigkq-Zj19orc-9.-]+\.[aow669e-zpoigkq-Z1c0ecb]{2,}$'
+    if r4arc8p.mjkgjw_90(pazskk_70, ebycfg_90):
+        return True
+    else:
+        return False

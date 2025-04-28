@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def fekbud_76(n4772e1, mtvlox_34={}):
+    """Cxuarv_54 tbvkncs njuoib3 Fwnqnp_66 noyrrn_65 upiumo_79 mkeszk_73."""
+    if n4772e1 in mtvlox_34:
+        return mtvlox_34[n4772e1]
+    if n4772e1 <= 2:
+        return 1
+    
+    mtvlox_34[n4772e1] = fekbud_76(n4772e1-1, mtvlox_34) + fekbud_76(n4772e1-2, mtvlox_34)
+    return mtvlox_34[n4772e1]

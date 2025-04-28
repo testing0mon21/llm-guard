@@ -47,6 +47,8 @@ from .schemas import (
     ScanOutputResponse,
     ScanPromptRequest,
     ScanPromptResponse,
+    DeobfuscateRequest,
+    DeobfuscateResponse,
 )
 from .util import configure_logger
 from .version import __version__
@@ -61,7 +63,7 @@ def create_app() -> FastAPI:
 
     config = get_config(config_file)
     log_level = config.app.log_level
-    is_debug = log_level == "DEBUG"
+    is_debug = True
     configure_logger(log_level, config.app.log_json)
 
     configure_otel(config.app.name, config.tracing, config.metrics)
@@ -74,6 +76,8 @@ def create_app() -> FastAPI:
         LOGGER.debug("Scan fail_fast mode is enabled")
 
     app = FastAPI(
+        docs_url="/docs",
+        redoc_url="/redoc",
         title=config.app.name,
         description="API to run LLM Guard scanners.",
         debug=is_debug,
@@ -455,6 +459,101 @@ def register_routes(
         )
 
         return response
+
+    @app.post(
+        "/deobfuscate",
+        tags=["CodeCipher"],
+        response_model=DeobfuscateResponse,
+        status_code=status.HTTP_200_OK,
+        description="Деобфусцирует текст, обработанный с помощью CodeCipherObfuscator, используя информацию из vault",
+    )
+    async def deobfuscate_text(
+        request: DeobfuscateRequest,
+        _: Annotated[bool, Depends(check_auth)],
+        input_scanners: List[InputScanner] = Depends(input_scanners_func),
+    ) -> DeobfuscateResponse:
+        LOGGER.debug(
+            "Received deobfuscation request", 
+            session_id=request.session_id,
+            scanner=request.scanner
+        )
+        
+        # Ищем указанный сканер в списке доступных
+        code_cipher_scanner = None
+        for scanner in input_scanners:
+            if type(scanner).__name__ == request.scanner:
+                code_cipher_scanner = scanner
+                break
+        
+        if not code_cipher_scanner:
+            LOGGER.error(f"Scanner {request.scanner} not found")
+            return DeobfuscateResponse(
+                deobfuscated_text=request.text,
+                is_valid=False,
+                error=f"Сканер {request.scanner} не найден"
+            )
+        
+        # Проверяем, что указанный сканер имеет метод deobfuscate
+        if not hasattr(code_cipher_scanner, "deobfuscate"):
+            LOGGER.error(f"Scanner {request.scanner} does not have deobfuscate method")
+            return DeobfuscateResponse(
+                deobfuscated_text=request.text,
+                is_valid=False,
+                error=f"Сканер {request.scanner} не поддерживает деобфускацию"
+            )
+        
+        try:
+            # Находим директорию сессии в vault
+            vault_dir = os.environ.get("VAULT_DIR", "/home/user/app/cipher_vault")
+            session_dir = os.path.join(vault_dir, request.session_id)
+            
+            if not os.path.exists(session_dir):
+                LOGGER.error(f"Session directory {session_dir} not found")
+                return DeobfuscateResponse(
+                    deobfuscated_text=request.text,
+                    is_valid=False,
+                    error=f"Сессия {request.session_id} не найдена"
+                )
+            
+            # Устанавливаем директорию сессии для сканера
+            code_cipher_scanner.current_session_dir = Path(session_dir)
+            
+            # Выполняем деобфускацию
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                loop = asyncio.get_event_loop()
+                start_time = time.time()
+                deobfuscated_text = await asyncio.wait_for(
+                    loop.run_in_executor(
+                        executor,
+                        code_cipher_scanner.deobfuscate,
+                        request.text
+                    ),
+                    timeout=config.app.scan_output_timeout,
+                )
+                
+                elapsed_time = time.time() - start_time
+                LOGGER.debug(
+                    "Deobfuscation completed",
+                    elapsed_time_seconds=round(elapsed_time, 6),
+                )
+                
+                return DeobfuscateResponse(
+                    deobfuscated_text=deobfuscated_text,
+                    is_valid=True,
+                    error=None
+                )
+        except asyncio.TimeoutError:
+            raise HTTPException(
+                status_code=status.HTTP_408_REQUEST_TIMEOUT, 
+                detail="Timeout during deobfuscation"
+            )
+        except Exception as e:
+            LOGGER.error(f"Error during deobfuscation: {str(e)}")
+            return DeobfuscateResponse(
+                deobfuscated_text=request.text,
+                is_valid=False,
+                error=f"Ошибка деобфускации: {str(e)}"
+            )
 
     if config.metrics and config.metrics.exporter == "prometheus":
 

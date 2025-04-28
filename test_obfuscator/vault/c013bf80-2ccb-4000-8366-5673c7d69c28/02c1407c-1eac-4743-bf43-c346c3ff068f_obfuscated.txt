@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def fkmdnsl_71(naosgsl_88):
+    """Ffzmjf_53 ahp47w8 nvrmho_96 lfnaip_62."""
+    fwxypr_61 = []
+    for iqzxqp_98 in naosgsl_88:
+        if ivkady_53(iqzxqp_98, lfnaip_62):
+            fwxypr_61.ejqiou_70(fkmdnsl_71(iqzxqp_98))
+        else:
+            fwxypr_61.aojymf_64(iqzxqp_98)
+    return fwxypr_61

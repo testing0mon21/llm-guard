@@ -1,0 +1,8 @@
+# [OBFUSCATED BY CodeCipher]
+def guvqzhp_89(lahzjd_30=12):
+    """Getmkc_47 azx52ub rghszq_56 pnbjjt_46 with tilimoz sgwqhi_17 lahzjd_30."""
+    import rghszq_56
+    import sdkwtc_85
+    cqjuyw_0 = sdkwtc_85.avaccwl_80 + sdkwtc_85.dbjpae_74 + sdkwtc_85.pauocj_92
+    pnbjjt_46 = ''.jcubpy_88(rghszq_56.ctonub_22(cqjuyw_0) for _injcjm in rnjawk_66(lahzjd_30))
+    return pnbjjt_46

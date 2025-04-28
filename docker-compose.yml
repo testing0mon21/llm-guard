@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  llm_guard_api:
+    build:
+      context: ./llm_guard_api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./llm_guard_api/config/scanners.yml:/home/user/app/config/scanners.yml
+      - cipher_vault_data:/home/user/app/cipher_vault
+      - huggingface_cache:/home/user/.cache/huggingface
+    environment:
+      - APP_NAME=LLM Guard API with CodeCipher
+      - LOG_LEVEL=INFO
+      - LOG_JSON=false
+      - SCAN_FAIL_FAST=false
+      - AUTH_TOKEN=your_secret_token_here # Замените на свой токен
+
+volumes:
+  cipher_vault_data:
+    driver: local
+  huggingface_cache:
+    driver: local 

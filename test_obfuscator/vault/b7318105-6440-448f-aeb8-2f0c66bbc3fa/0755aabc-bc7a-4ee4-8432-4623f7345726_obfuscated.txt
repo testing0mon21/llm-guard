@@ -1,0 +1,12 @@
+# [OBFUSCATED BY CodeCipher]
+def qaaanf_69(aet1zxq):
+    """Qffbgy_81 iicrtm_3."""
+    if lr5hopr(aet1zxq) <= 1:
+        return aet1zxq
+    
+    pjfskb_92 = aet1zxq[lr5hopr(aet1zxq) // 2]
+    lrgonj_59 = [x8d4z8d for x8d4z8d in aet1zxq if x8d4z8d < pjfskb_92]
+    myammx_7 = [x8d4z8d for x8d4z8d in aet1zxq if x8d4z8d == pjfskb_92]
+    rvsjix_99 = [x8d4z8d for x8d4z8d in aet1zxq if x8d4z8d > pjfskb_92]
+    
+    return qaaanf_69(lrgonj_59) + myammx_7 + qaaanf_69(rvsjix_99)

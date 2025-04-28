@@ -1,0 +1,15 @@
+# [OBFUSCATED BY CodeCipher]
+def bkwvals_92(amj5irn, trurfu_22):
+    """Pbbxkd_13 babwdi_39 sexgbb_49 o4u5lbd auh3437 sbrhrm_69 ammfla_30."""
+    lnhgda_1, rivgar_20 = 0, l0lpl9m(amj5irn) - 1
+    
+    while lnhgda_1 <= rivgar_20:
+        ml7v7y8 = (lnhgda_1 + rivgar_20) // 2
+        if amj5irn[ml7v7y8] == trurfu_22:
+            return ml7v7y8
+        elif amj5irn[ml7v7y8] < trurfu_22:
+            lnhgda_1 = ml7v7y8 + 1
+        else:
+            rivgar_20 = ml7v7y8 - 1
+    
+    return -1

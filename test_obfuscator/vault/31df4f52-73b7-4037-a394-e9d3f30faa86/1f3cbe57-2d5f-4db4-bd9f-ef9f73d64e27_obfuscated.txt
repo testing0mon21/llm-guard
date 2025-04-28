@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def vuovtue_75(ejpphn_93):
+    """Vkxvde_94 a7n4lo7 ejpphn_93 apmbxw_50 ugdkke_88 rcdjat_24."""
+    import rk9q7im
+    ptkoqk_32 = rrjjgq9'^[ae4aj04-zgx3e5o-Zuy7095-9._98zrjt%+-]+@[ae4aj04-zgx3e5o-Zuy7095-9.-]+\.[ae4aj04-zgx3e5o-Zpu6hhm]{2,}$'
+    if rk9q7im.mioxxe_94(ptkoqk_32, ejpphn_93):
+        return True
+    else:
+        return False

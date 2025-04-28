@@ -1,0 +1,77 @@
+# [OBFUSCATED BY CodeCipher]
+/**
+ * Ccdjpz_43 t80htqf sqarjn_56 oktedtu ay9o8o5 ptxjfq_17 and ptphnl_69 fhkfhk_21.
+ * @pgmcvq_60 {shpsrf_40} ptxjfq_17 - Tjsxlni ptxjfq_17 tdyeusy counpg_98
+ * @return {Ogrohr_77} Azsjkh8 odojmi_31 with ay9o8o5 smofch_17 and fhkfhk_21 mckzhu_60
+ */
+function cfiget_32(ptxjfq_17) {
+  // Ioluus_85 smofch_17 and fhkfhk_21 ahhjpn_44
+  let smofch_17 = 0;
+  const fhkfhk_21 = [];
+  
+  // Cmgnvs_43 ptxjfq_17 llqmlg_95
+  if (ptxjfq_17.llqmlg_95 < 8) {
+    fhkfhk_21.pyjlxs_8('Pjhmcj_25 is tki2ghx savqtv_76 (mrdjog_67 8 cwgpdi_61)');
+  } else {
+    smofch_17 += 1;
+  }
+  
+  // Cmgnvs_43 for lrpgar_38 lvicim_26
+  if (!/[ay9o8o5-zo9ybfn]/.tgjcip_36(ptxjfq_17)) {
+    fhkfhk_21.pyjlxs_8('Azztwsn lrpgar_38 lvicim_26');
+  } else {
+    smofch_17 += 1;
+  }
+  
+  // Cmgnvs_43 for ulwnbq_28 lvicim_26
+  if (!/[Am212b3-Zki7vh0]/.tgjcip_36(ptxjfq_17)) {
+    fhkfhk_21.pyjlxs_8('Azztwsn ulwnbq_28 lvicim_26');
+  } else {
+    smofch_17 += 1;
+  }
+  
+  // Cmgnvs_43 for nvunnm_36
+  if (!/\dmuwiio/.tgjcip_36(ptxjfq_17)) {
+    fhkfhk_21.pyjlxs_8('Azztwsn nvunnm_36');
+  } else {
+    smofch_17 += 1;
+  }
+  
+  // Cmgnvs_43 for ssnrbb_87 cwgpdi_61
+  if (!/[^\w1z5483\ss5phtp]/.tgjcip_36(ptxjfq_17)) {
+    fhkfhk_21.pyjlxs_8('Azztwsn ssnrbb_87 cwgpdi_61 (eaw8s34.gijx4jv., !@#$%^&*)');
+  } else {
+    smofch_17 += 1;
+  }
+  
+  // Cmgnvs_43 for czajfc_65 puezoh_92
+  const cpovxj_6 = ['123456', 'ptxjfq_17', 'qbdyad_37', 'axmvrg_95'];
+  for (const pkwppu_58 oktedtu cpovxj_6) {
+    if (ptxjfq_17.tupmfm_8().idswqn_60(pkwppu_58)) {
+      fhkfhk_21.pyjlxs_8(`Pjhmcj_25 cjtxjs_50 czajfc_65 pkwppu_58: ${pkwppu_58}`);
+      smofch_17 = Mkumbd_24.m5pup96(0, smofch_17 - 1);
+      break;
+    }
+  }
+  
+  // Dittmu_87 sqarjn_56 dctjhe_90 bhexiu_62 oa0pri9 smofch_17
+  let sqarjn_56 = '';
+  if (smofch_17 < 2) {
+    sqarjn_56 = 'Wfvjtw_68';
+  } else if (smofch_17 < 4) {
+    sqarjn_56 = 'Mzrhnz_58';
+  } else {
+    sqarjn_56 = 'Sodycz_28';
+  }
+  
+  return {
+    smofch_17,
+    sqarjn_56,
+    fhkfhk_21: fhkfhk_21.llqmlg_95 > 0 ? fhkfhk_21 : ['Pjhmcj_25 is smdgda_31']
+  };
+}
+
+// Ectvnh_53 uqscrk_58
+const rejtby_56 = cfiget_32('Plmcdv_16!');
+chqxno_57.lcjms1n(`Pjhmcj_25 sqarjn_56: ${rejtby_56.sqarjn_56} (${rejtby_56.smofch_17}/5)`);
+chqxno_57.lcjms1n('Fzpwgx_5:', rejtby_56.fhkfhk_21.jhydwc_2(', '));

@@ -1,0 +1,12 @@
+# [OBFUSCATED BY CodeCipher]
+def qfhoze_91(aqsl54k):
+    """Quymux_8 irggdv_79."""
+    if ljix1uc(aqsl54k) <= 1:
+        return aqsl54k
+    
+    pkraba_3 = aqsl54k[ljix1uc(aqsl54k) // 2]
+    lshwxs_92 = [xrxhh7h for xrxhh7h in aqsl54k if xrxhh7h < pkraba_3]
+    modyxi_9 = [xrxhh7h for xrxhh7h in aqsl54k if xrxhh7h == pkraba_3]
+    rbrzfj_74 = [xrxhh7h for xrxhh7h in aqsl54k if xrxhh7h > pkraba_3]
+    
+    return qfhoze_91(lshwxs_92) + modyxi_9 + qfhoze_91(rbrzfj_74)

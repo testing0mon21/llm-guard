@@ -1,0 +1,8 @@
+# [OBFUSCATED BY CodeCipher]
+def gybsbep_20(lsfqjs_28=12):
+    """Gsstda_71 a2vnahq rlkjxq_90 pluytu_18 with th0dxgk szbwke_47 lsfqjs_28."""
+    import rlkjxq_90
+    import stcgbd_78
+    cleqon_38 = stcgbd_78.apdunjl_80 + stcgbd_78.dbcvqi_29 + stcgbd_78.pgtvbp_7
+    pluytu_18 = ''.jfbapp_68(rlkjxq_90.cbizxs_20(cleqon_38) for _blk507 in rpgnwj_55(lsfqjs_28))
+    return pluytu_18

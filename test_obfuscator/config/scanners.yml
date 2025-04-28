@@ -1,0 +1,60 @@
+app:
+  lazy_load: ${LAZY_LOAD:false}
+  log_json: ${LOG_JSON:true}
+  log_level: ${LOG_LEVEL:DEBUG}
+  name: ${APP_NAME:LLM Guard API}
+  scan_fail_fast: ${SCAN_FAIL_FAST:false}
+  scan_output_timeout: ${SCAN_OUTPUT_TIMEOUT:30}
+  scan_prompt_timeout: ${SCAN_PROMPT_TIMEOUT:30}
+auth:
+  token: ${AUTH_TOKEN:}
+  type: http_bearer
+input_scanners:
+- params:
+    redact_mode: all
+  type: Secrets
+- params:
+    encoding_name: cl100k_base
+    limit: 4096
+  type: TokenLimit
+- params: {}
+  type: InvisibleText
+- params:
+    is_blocked: true
+    match_type: search
+    patterns:
+    - Bearer [A-Za-z0-9-._~+/]+
+    redact: true
+  type: Regex
+- params:
+    early_stopping_patience: 5
+    learning_rate: 0.01
+    max_training_iterations: 50
+    model_name: gpt2-medium
+    perplexity_threshold: 50.0
+    skip_patterns:
+    - '# COPYRIGHT'
+    - '# DO NOT OBFUSCATE'
+    vault_dir: /Users/dean2155/llm-guard/test_obfuscator/vault
+  type: CodeCipherObfuscator
+metrics:
+  endpoint: ${METRICS_ENDPOINT:}
+  exporter: ${METRICS_TYPE:prometheus}
+output_scanners:
+- params:
+    max_time: 5
+    truncate: false
+  type: ReadingTime
+- params:
+    is_blocked: true
+    match_type: search
+    patterns:
+    - Bearer [A-Za-z0-9-._~+/]+
+    redact: true
+  type: Regex
+rate_limit:
+  enabled: ${RATE_LIMIT_ENABLED:false}
+  limit: ${RATE_LIMIT_LIMIT:100/minute}
+tracing:
+  endpoint: ${TRACING_OTEL_ENDPOINT:}
+  exporter: ${TRACING_EXPORTER:console}

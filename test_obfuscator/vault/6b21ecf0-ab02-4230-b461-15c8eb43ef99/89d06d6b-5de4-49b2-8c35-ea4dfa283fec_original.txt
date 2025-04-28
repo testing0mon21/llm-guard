@@ -1,0 +1,76 @@
+/**
+ * Checks the strength of a password and provides feedback.
+ * @param {string} password - The password to check
+ * @return {Object} An object with a score and feedback messages
+ */
+function checkPasswordStrength(password) {
+  // Initialize score and feedback array
+  let score = 0;
+  const feedback = [];
+  
+  // Check password length
+  if (password.length < 8) {
+    feedback.push('Password is too short (minimum 8 characters)');
+  } else {
+    score += 1;
+  }
+  
+  // Check for lowercase letters
+  if (!/[a-z]/.test(password)) {
+    feedback.push('Add lowercase letters');
+  } else {
+    score += 1;
+  }
+  
+  // Check for uppercase letters
+  if (!/[A-Z]/.test(password)) {
+    feedback.push('Add uppercase letters');
+  } else {
+    score += 1;
+  }
+  
+  // Check for numbers
+  if (!/\d/.test(password)) {
+    feedback.push('Add numbers');
+  } else {
+    score += 1;
+  }
+  
+  // Check for special characters
+  if (!/[^\w\s]/.test(password)) {
+    feedback.push('Add special characters (e.g., !@#$%^&*)');
+  } else {
+    score += 1;
+  }
+  
+  // Check for common patterns
+  const commonPatterns = ['123456', 'password', 'qwerty', 'admin'];
+  for (const pattern of commonPatterns) {
+    if (password.toLowerCase().includes(pattern)) {
+      feedback.push(`Password contains common pattern: ${pattern}`);
+      score = Math.max(0, score - 1);
+      break;
+    }
+  }
+  
+  // Determine strength description based on score
+  let strength = '';
+  if (score < 2) {
+    strength = 'Weak';
+  } else if (score < 4) {
+    strength = 'Moderate';
+  } else {
+    strength = 'Strong';
+  }
+  
+  return {
+    score,
+    strength,
+    feedback: feedback.length > 0 ? feedback : ['Password is strong']
+  };
+}
+
+// Example usage
+const result = checkPasswordStrength('Passw0rd!');
+console.log(`Password strength: ${result.strength} (${result.score}/5)`);
+console.log('Feedback:', result.feedback.join(', '));

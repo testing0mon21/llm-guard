@@ -1,11 +1,11 @@
 app:
   name: ${APP_NAME:LLM Guard API}
-  log_level: ${LOG_LEVEL:INFO}
+  log_level: ${LOG_LEVEL:DEBUG}
   log_json: ${LOG_JSON:true}
   scan_fail_fast: ${SCAN_FAIL_FAST:false}
   scan_prompt_timeout: ${SCAN_PROMPT_TIMEOUT:30}
   scan_output_timeout: ${SCAN_OUTPUT_TIMEOUT:30}
-  lazy_load: ${LAZY_LOAD:true}
+  lazy_load: ${LAZY_LOAD:false}
 
 rate_limit:
   enabled: ${RATE_LIMIT_ENABLED:false}
@@ -23,128 +23,77 @@ metrics:
   exporter: ${METRICS_TYPE:prometheus}
   endpoint: ${METRICS_ENDPOINT:}  # Example: "<metrics-endpoint>/v1/metrics"
 
-# Scanners are applied in the order they are listed here.
+# Оптимизированный список сканеров: оставляем только самые необходимые
 input_scanners:
-  - type: Anonymize
+  # Важные сканеры для базовой безопасности
+  - type: Secrets
     params:
-      use_faker: false
-      threshold: 0.75
-      # model_path: "./distilbert_finetuned_ai4privacy_v2"
-  - type: BanCode
+      redact_mode: "all"
+  - type: TokenLimit
     params:
-      threshold: 0.97
-      model_max_length: 256
-  - type: BanCompetitors
-    params:
-      competitors: ["facebook"]
-      threshold: 0.75
-  - type: BanSubstrings
-    params:
-      substrings: ["test"]
-      match_type: "word"
-      case_sensitive: false
-      redact: false
-      contains_all: false
-  - type: BanTopics
-    params:
-      topics: ["violence"]
-      threshold: 0.8
-      model_max_length: 256
-#  - type: Code
-#    params:
-#      languages: ["Python"]
-#      is_blocked: true
-  - type: Gibberish
-    params:
-      threshold: 0.97
-      model_max_length: 256
+      limit: 4096
+      encoding_name: "cl100k_base"
   - type: InvisibleText
     params: { }
-  - type: Language
-    params:
-      valid_languages: [ "en" ]
-      model_max_length: 256
-  - type: PromptInjection
-    params:
-      threshold: 0.92
-      match_type: truncate_head_tail
-      model_max_length: 256
   - type: Regex
     params:
       patterns: ["Bearer [A-Za-z0-9-._~+/]+"]
       is_blocked: true
       match_type: search
       redact: true
-  - type: Secrets
+  
+  # Добавляем сканер обфускации кода
+  - type: CodeCipherObfuscator
     params:
-      redact_mode: "all"
-  - type: Sentiment
-    params:
-      threshold: 0.0
-  - type: TokenLimit
-    params:
-      limit: 4096
-      encoding_name: "cl100k_base"
-  - type: Toxicity
-    params:
-      threshold: 0.9
-      model_max_length: 256
+      model_name: "gpt2"
+      max_training_iterations: 50
+      learning_rate: 0.01 
+      perplexity_threshold: 50.0
+      early_stopping_patience: 5
+      vault_dir: "/home/user/app/cipher_vault"
+      skip_patterns: ["# COPYRIGHT", "# DO NOT OBFUSCATE"]
+  
+  # Закомментированы тяжелые сканеры, требующие ML-моделей
+  # - type: Anonymize
+  #   params:
+  #     use_faker: false
+  #     threshold: 0.75
+  # - type: BanCode
+  #   params:
+  #     threshold: 0.97
+  #     model_max_length: 256
+  # - type: BanTopics
+  #   params:
+  #     topics: ["violence"]
+  #     threshold: 0.8
+  #     model_max_length: 256
+  # - type: Gibberish
+  #   params:
+  #     threshold: 0.97
+  #     model_max_length: 256
+  # - type: Language
+  #   params:
+  #     valid_languages: [ "en" ]
+  #     model_max_length: 256
+  # - type: PromptInjection
+  #   params:
+  #     threshold: 0.92
+  #     match_type: truncate_head_tail
+  #     model_max_length: 256
+  # - type: Toxicity
+  #   params:
+  #     threshold: 0.9
+  #     model_max_length: 256
 
+  # Закомментированы сканеры для предобученных моделей, которые мы реализуем позже
+  # - type: PretrainedCodeCipherObfuscator
+  #   params:
+  #     pretrained_models_dir: "/home/user/app/pretrained_models"
+  #     vault_dir: "/home/user/app/cipher_vault"
+  #     skip_patterns: ["# COPYRIGHT", "# DO NOT OBFUSCATE"]
 
 output_scanners:
-  - type: BanCode
-    params:
-      threshold: 0.97
-      model_max_length: 256
-  - type: BanCompetitors
-    params:
-      competitors: ["facebook"]
-      threshold: 0.75
-  - type: BanSubstrings
-    params:
-      substrings: ["test"]
-      match_type: "word"
-      case_sensitive: false
-      redact: false
-      contains_all: false
-  - type: BanTopics
-    params:
-      topics: ["violence"]
-      threshold: 0.8
-  - type: Bias
-    params:
-      threshold: 0.97
-      model_max_length: 256
-#  - type: Code
-#    params:
-#      languages: ["Python"]
-#      is_blocked: true
-  - type: Deanonymize
-    params:
-      matching_strategy: "exact"
-  - type: FactualConsistency
-    params:
-      minimum_score: 0.5
-  - type: Gibberish
-    params:
-      threshold: 0.97
-#  - type: JSON
-#    params:
-#      required_elements: 0
-#      repair: true
-  - type: Language
-    params:
-      valid_languages: [ "en" ]
-      model_max_length: 256
-  - type: LanguageSame
-    params:
-      model_max_length: 256
-  - type: MaliciousURLs
-    params:
-      threshold: 0.75
-  - type: NoRefusal
-    params:
-      threshold: 0.9
+  # Легкие сканеры без ML-моделей
   - type: ReadingTime
     params:
       max_time: 5
@@ -155,19 +104,55 @@ output_scanners:
       is_blocked: true
       match_type: search
       redact: true
-  - type: Relevance
-    params:
-      threshold: 0.2
-  - type: Sensitive
-    params:
-      redact: false
-      threshold: 0.75
-  - type: Sentiment
-    params:
-      threshold: 0.0
-  - type: Toxicity
-    params:
-      threshold: 0.9
-      model_max_length: 256
-  - type: URLReachability
-    params: {}
+  
+  # Закомментированы тяжелые сканеры с ML-моделями
+  # - type: BanCode
+  #   params:
+  #     threshold: 0.97
+  #     model_max_length: 256
+  # - type: BanTopics
+  #   params:
+  #     topics: ["violence"]
+  #     threshold: 0.8
+  # - type: Bias
+  #   params:
+  #     threshold: 0.97
+  #     model_max_length: 256
+  # - type: Deanonymize
+  #   params:
+  #     matching_strategy: "exact"
+  # - type: FactualConsistency
+  #   params:
+  #     minimum_score: 0.5
+  # - type: Gibberish
+  #   params:
+  #     threshold: 0.97
+  # - type: Language
+  #   params:
+  #     valid_languages: [ "en" ]
+  #     model_max_length: 256
+  # - type: LanguageSame
+  #   params:
+  #     model_max_length: 256
+  # - type: MaliciousURLs
+  #   params:
+  #     threshold: 0.75
+  # - type: NoRefusal
+  #   params:
+  #     threshold: 0.9
+  # - type: Relevance
+  #   params:
+  #     threshold: 0.2
+  # - type: Sensitive
+  #   params:
+  #     redact: false
+  #     threshold: 0.75
+  # - type: Sentiment
+  #   params:
+  #     threshold: 0.0
+  # - type: Toxicity
+  #   params:
+  #     threshold: 0.9
+  #     model_max_length: 256
+  # - type: URLReachability
+  #   params: {}

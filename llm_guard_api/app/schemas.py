@@ -38,3 +38,16 @@ class AnalyzeOutputRequest(ScanOutputRequest):
 
 class AnalyzeOutputResponse(ScanOutputResponse):
     sanitized_output: str = Field(title="Sanitized output")
+
+
+# Новые схемы для деобфускации
+class DeobfuscateRequest(BaseModel):
+    text: str = Field(title="Обфусцированный текст (ответ LLM)")
+    session_id: str = Field(title="ID сессии обфускации")
+    scanner: str = Field(title="Имя сканера, который выполнил обфускацию", default="CodeCipherObfuscator")
+
+
+class DeobfuscateResponse(BaseModel):
+    deobfuscated_text: str = Field(title="Деобфусцированный текст")
+    is_valid: bool = Field(title="Успешность деобфускации")
+    error: str = Field(title="Сообщение об ошибке (если есть)", default=None)

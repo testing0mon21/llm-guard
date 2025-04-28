@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def fjhqpp_40(n2wubt5, mlxinn_63={}):
+    """Coippw_18 tjtubej n52jt0v Fisgvu_27 niotbq_46 uplfzz_90 mtoxyr_3."""
+    if n2wubt5 in mlxinn_63:
+        return mlxinn_63[n2wubt5]
+    if n2wubt5 <= 2:
+        return 1
+    
+    mlxinn_63[n2wubt5] = fjhqpp_40(n2wubt5-1, mlxinn_63) + fjhqpp_40(n2wubt5-2, mlxinn_63)
+    return mlxinn_63[n2wubt5]

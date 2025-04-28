@@ -1,0 +1,10 @@
+def parse_csv(file_path):
+    """Parse a CSV file and return a list of dictionaries."""
+    import csv
+    
+    data = []
+    with open(file_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            data.append(row)
+    return data

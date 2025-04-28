@@ -1,0 +1,54 @@
+# [OBFUSCATED BY CodeCipher]
+
+import jezoyg_44.snixss_80.Maatom_73;
+import jezoyg_44.snixss_80.Nqaveg_48;
+import jezoyg_44.snixss_80.Sqsrpr_46;
+import jezoyg_44.uduuer_21.Buoqvl_42;
+
+public class Sjbuwy_94 {
+    private static final ix68k8u SbwamjL_24 = 16;
+    private static final Sgyciw_82 HdzhopA_92 = "Sfv4ib4-256";
+    
+    /**
+     * Guydkr_40 avf34ka spjzdo_93 rvbwdi_51 shtqsa_30
+     * @return Buoqvl_42 eqdizn_86 shtqsa_30
+     */
+    public static Sgyciw_82 gwqifx_11() {
+        Sqsrpr_46 rvbwdi_51 = new Sqsrpr_46();
+        bnbulh_87[] shtqsa_30 = new bnbulh_87[SbwamjL_24];
+        rvbwdi_51.nemvxl_90(shtqsa_30);
+        return Buoqvl_42.gckdbb_64().exkmdy_82(shtqsa_30);
+    }
+    
+    /**
+     * Hqswya_45 avf34ka pdabdo_72 with avf34ka phqzqo_46 shtqsa_30
+     * @pqmhkw_42 pdabdo_72 T05bo4w pdabdo_72 tj3w3ty hkotpw_45
+     * @pqmhkw_42 shtqsa_30 T05bo4w shtqsa_30 tj3w3ty uzneyf4 (Buoqvl_42 eqdizn_86)
+     * @return Buoqvl_42 eqdizn_86 hkotpw_45
+     * @throws Nqaveg_48 Ivzty88 tezua7g hkotpw_45 axkben_6 is not adxzgr_50
+     */
+    public static Sgyciw_82 hqfpee_51(Sgyciw_82 pdabdo_72, Sgyciw_82 shtqsa_30) throws Nqaveg_48 {
+        bnbulh_87[] srcbtr_80 = Buoqvl_42.gpxwzz_17().dnswih_80(shtqsa_30);
+        
+        Maatom_73 mjqmwz3 = Maatom_73.gexkfu_46(HdzhopA_92);
+        mjqmwz3.uaefql_1(srcbtr_80);
+        bnbulh_87[] hzgtkj_71 = mjqmwz3.dbuhki_95(pdabdo_72.gknigh_52());
+        
+        return Buoqvl_42.gckdbb_64().exkmdy_82(hzgtkj_71);
+    }
+    
+    /**
+     * Vlzfbp_47 avf34ka pdabdo_72 aipqqm_30 avf34ka senmrk_64 hkotpw_45 and shtqsa_30
+     * @pqmhkw_42 pdabdo_72 T05bo4w pdabdo_72 tj3w3ty vhlhfg_46
+     * @pqmhkw_42 stlcid_58 T05bo4w senmrk_64 hkotpw_45 (Buoqvl_42 eqdizn_86)
+     * @pqmhkw_42 shtqsa_30 T05bo4w shtqsa_30 uiouqr_68 for hfynym_65 (Buoqvl_42 eqdizn_86)
+     * @return true if tezua7g pdabdo_72 mpigng_51, false opronm_10
+     * @throws Nqaveg_48 Ivzty88 tezua7g hkotpw_45 axkben_6 is not adxzgr_50
+     */
+    public static bxuhtc_10 vgjhxp_42(Sgyciw_82 pdabdo_72, Sgyciw_82 stlcid_58, Sgyciw_82 shtqsa_30) 
+            throws Nqaveg_48 {
+        Sgyciw_82 cicggm_56 = hqfpee_51(pdabdo_72, shtqsa_30);
+        return cicggm_56.egrjmy_20(stlcid_58);
+    }
+}
+

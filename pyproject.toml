@@ -33,7 +33,8 @@ dependencies = [
   "transformers==4.48.3",
   "structlog>=24",
   "oldest-supported-numpy",
-  "spacy-pkuseg==1.0.0"
+  "spacy-pkuseg==1.0.0",
+  "huggingface_hub[hf_xet]"
 ]
 
 [project.optional-dependencies]

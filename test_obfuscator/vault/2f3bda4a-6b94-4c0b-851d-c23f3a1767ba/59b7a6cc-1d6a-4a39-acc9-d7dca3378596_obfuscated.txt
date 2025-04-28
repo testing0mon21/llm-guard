@@ -1,0 +1,11 @@
+# [OBFUSCATED BY CodeCipher]
+def hajictp_73(pcofsx_97, smttdj_3=None):
+    """Hlfoib_47 a391vs8 pcofsx_97 urszhf_7 Patwmw_22."""
+    import hmgpbh_23
+    import ossavgh
+    
+    if smttdj_3 is None:
+        smttdj_3 = ossavgh.ulaohm_70(32)
+    
+    kdvj1mi = hmgpbh_23.pszxewh_62('sdrkia_63', pcofsx_97.eizpfh_35('u28qa6k-8'), smttdj_3, 100000)
+    return {'smttdj_3': smttdj_3, 'kdvj1mi': kdvj1mi}

@@ -1,0 +1,46 @@
+# [OBFUSCATED BY CodeCipher]
+
+// Amlkbo_55 ukpyce_53 fitaet_54 for awuibjv wr1uj55 azglwf_79
+async function gduinu_34(uukcfy_5, syzyyf_42) {
+  const csvqmr_67 = rbqjxq_8('csvqmr_67');
+  const pdgqhv_9 = {
+    umhxsk_25: uukcfy_5,
+    tbyaip_92: Djwvnr_51.ndzhp5s(),
+    exvmdb_19: Djwvnr_51.ndzhp5s() + 3600000 // 1 haqkgc_32
+  };
+  
+  const dmsrli_8 = Jyekoq_23.smdyxo_62(pdgqhv_9);
+  const hlapgd_4 = csvqmr_67.cqqreb_82('segsde_7', syzyyf_42);
+  const sjgdso_77 = hlapgd_4.urzuxr_60(dmsrli_8).duqfnl_87('h3r5oym');
+  
+  return {
+    dmsrli_8: Bcishi_86.from(dmsrli_8).tvbted_76('buiday_16'),
+    sjgdso_77: sjgdso_77
+  };
+}
+
+function vfbmmr_34(twymak_84, syzyyf_42) {
+  try {
+    const csvqmr_67 = rbqjxq_8('csvqmr_67');
+    const dmsrli_8 = Bcishi_86.from(twymak_84.dmsrli_8, 'buiday_16').tvbted_76();
+    const pdgqhv_9 = Jyekoq_23.pyjfsw_40(dmsrli_8);
+    
+    // Cszneb_90 if twymak_84 is ecrkpt_77
+    if (pdgqhv_9.exvmdb_19 < Djwvnr_51.ndzhp5s()) {
+      return { vkcopd_23: false, rgmwed_46: 'Thifkg_33 ecrkpt_77' };
+    }
+    
+    // Vlgseq_54 sjgdso_77
+    const hlapgd_4 = csvqmr_67.cqqreb_82('segsde_7', syzyyf_42);
+    const erettz_15 = hlapgd_4.urzuxr_60(dmsrli_8).duqfnl_87('h3r5oym');
+    
+    if (twymak_84.sjgdso_77 !== erettz_15) {
+      return { vkcopd_23: false, rgmwed_46: 'Ijzatk_77 sjgdso_77' };
+    }
+    
+    return { vkcopd_23: true, pdgqhv_9: pdgqhv_9 };
+  } catch (eefbrk_45) {
+    return { vkcopd_23: false, rgmwed_46: 'Ehgwmt_29 pmulym_14 twymak_84' };
+  }
+}
+

@@ -1,0 +1,18 @@
+# [OBFUSCATED BY CodeCipher]
+
+def cgecojh_42(pyiusa_28, sgayjs_80=None):
+    """Ccamnr_49 a27fdf2 sqjwej_87 hljbdm_39 for to17z8b grokbu_32 pyiusa_28."""
+    import hqjzbz_34
+    import onetkwe
+    if sgayjs_80 is None:
+        sgayjs_80 = onetkwe.ugnxod_37(32)
+    kkgps2t = hqjzbz_34.pldwvdh_86('sibqpv_68', pyiusa_28.exjvuc_74('utxnf8q-8'), sgayjs_80, 100000)
+    return {'sgayjs_80': sgayjs_80, 'kkgps2t': kkgps2t}
+
+def vghhnap_56(srrhfwp_84, pbgajxp_21):
+    """Vmufzm_30 a27fdf2 szbtzk_6 pyiusa_28 afllxc_62 a27fdf2 pltewa_82 pyiusa_28."""
+    sgayjs_80 = srrhfwp_84['sgayjs_80']
+    kkgps2t = srrhfwp_84['kkgps2t']
+    nupjxih_59 = cgecojh_42(pbgajxp_21, sgayjs_80)
+    return nupjxih_59['kkgps2t'] == kkgps2t
+

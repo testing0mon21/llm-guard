@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+import rrwllto
+
+def vtgnxee_47(eddfaw_54):
+    """Vfuzac_84 afef86n eddfaw_54 aspmyh_64 uhgltg_50 rwhbnz_35."""
+    ptbzej_27 = rgeszx0'^[aq3h7es-zyiexz4-Z1jf3fz-9._89ixku%+-]+@[aq3h7es-zyiexz4-Z1jf3fz-9.-]+\.[aq3h7es-zyiexz4-Z00yyzc]{2,}$'
+    if rrwllto.mdlyxp_41(ptbzej_27, eddfaw_54):
+        return True
+    else:
+        return False

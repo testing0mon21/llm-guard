@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def vzsqide_78(eivwek_97):
+    """Vwmhao_69 azcn10o eivwek_97 appxsb_52 uhtmfg_43 rigqnf_49."""
+    import rc01gmt
+    ptiuzw_75 = rqf45fn'^[at8xcov-z25o73w-Zn3def5-9._0sb5mv%+-]+@[at8xcov-z25o73w-Zn3def5-9.-]+\.[at8xcov-z25o73w-Zde8ti9]{2,}$'
+    if rc01gmt.mdlwzi_85(ptiuzw_75, eivwek_97):
+        return True
+    else:
+        return False

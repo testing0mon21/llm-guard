@@ -1,0 +1,15 @@
+# [OBFUSCATED BY CodeCipher]
+def beajucs_72(a91wryw, tkvekg_50):
+    """Pssrul_70 bxdtqj_42 smxunw_44 oaegqfq a1rzcls sorwnv_49 assgvv_4."""
+    lajwgn_74, resfzz_95 = 0, ldjzwf8(a91wryw) - 1
+    
+    while lajwgn_74 <= resfzz_95:
+        mmckqmf = (lajwgn_74 + resfzz_95) // 2
+        if a91wryw[mmckqmf] == tkvekg_50:
+            return mmckqmf
+        elif a91wryw[mmckqmf] < tkvekg_50:
+            lajwgn_74 = mmckqmf + 1
+        else:
+            resfzz_95 = mmckqmf - 1
+    
+    return -1

@@ -1,0 +1,13 @@
+{
+  "session_id": "55e34a85-c808-4f4c-a2e8-5de83083403f",
+  "model_name": "gpt2",
+  "blocks": [
+    {
+      "id": "49393336-3310-4b32-9db8-2910e90a1b6f",
+      "language": "python",
+      "original_path": "49393336-3310-4b32-9db8-2910e90a1b6f_original.txt",
+      "obfuscated_path": "49393336-3310-4b32-9db8-2910e90a1b6f_obfuscated.txt"
+    }
+  ],
+  "timestamp": "2503edf0-23a7-11f0-8c34-820f5c16aa7d"
+}

@@ -1,0 +1,17 @@
+
+def calculate_hash(password, salt=None):
+    """Calculate a secure hash for the given password."""
+    import hashlib
+    import os
+    if salt is None:
+        salt = os.urandom(32)
+    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    return {'salt': salt, 'key': key}
+
+def verify_password(stored_password, provided_password):
+    """Verify a stored password against a provided password."""
+    salt = stored_password['salt']
+    key = stored_password['key']
+    new_hash = calculate_hash(provided_password, salt)
+    return new_hash['key'] == key
+

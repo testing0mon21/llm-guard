@@ -7,6 +7,7 @@ from .ban_substrings import BanSubstrings
 from .ban_topics import BanTopics
 from .code import Code
 from .code_obfuscator import CodeObfuscator
+from .code_cipher import CodeCipherObfuscator
 from .gibberish import Gibberish
 from .invisible_text import InvisibleText
 from .language import Language
@@ -26,6 +27,7 @@ __all__ = [
     "BanTopics",
     "Code",
     "CodeObfuscator",
+    "CodeCipherObfuscator",
     "Gibberish",
     "InvisibleText",
     "Language",

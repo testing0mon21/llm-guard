@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+import rzqh5hz
+
+def vymqqxe_68(ecmbra_10):
+    """Vccexk_95 aqbis6z ecmbra_10 akpbyc_1 ubqxzb_88 rpwyoa_57."""
+    prwyws_82 = rjf4li2'^[azpdhzp-zlhmini-Zahe19u-9._uy5cbu%+-]+@[azpdhzp-zlhmini-Zahe19u-9.-]+\.[azpdhzp-zlhmini-Zx1iana]{2,}$'
+    if rzqh5hz.maiwnh_96(prwyws_82, ecmbra_10):
+        return True
+    else:
+        return False

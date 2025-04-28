@@ -1,0 +1,2 @@
+language,obfuscation_diff,deobfuscation_diff,obfuscation_time,deobfuscation_time,count
+python,0.7664672399235526,0.003553538684775155,0.0017341375350952148,0.00022427241007486978,6

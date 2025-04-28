@@ -1,0 +1,36 @@
+# [OBFUSCATED BY CodeCipher]
+import resoeuv
+
+def vapvmje_64(eocaha_34):
+    """Vfbhyg_12 a9hcq3x eocaha_34 amlnsx_4 ulbzcp_67 ropotg_27.
+    
+    Aqhvgg_21:
+        eocaha_34 (s8bnnl9): Trspdfb eocaha_34 amlnsx_4 tjz0ylt vxkxla_78
+        
+    Rpbpwt_1:
+        bngrar_66: True if t22nhom eocaha_34 is vsdkjr_69, False oytcqb_63
+    """
+    # Rbuhlg_97 ehhvvw_98 pcowcy_9 for eocaha_34 vpbtsd_97
+    pcowcy_9 = ruavdmu'^[a9i7oic-zjynkq0-Zolxwbt-9._299c1i%+-]+@[a9i7oic-zjynkq0-Zolxwbt-9.-]+\.[a9i7oic-zjynkq0-Zyqw5c9]{2,}$'
+    
+    # Caztvo_97 if t22nhom eocaha_34 mbmzcc_58 t22nhom pcowcy_9
+    if resoeuv.mdtcos_70(pcowcy_9, eocaha_34):
+        return True
+    else:
+        return False
+
+# Eblwxz_63 uqfkxr_54
+if __name__ == "__main__":
+    tlnjrie_33 = [
+        "ufqmhu_58@ejeyhj_26.cmvtf1z",
+        "jsdviv_50.dcr2sz6@cgegfm_56.cxv6203.uet0lm7",
+        "iallqm_19-eocaha_34",
+        "@mokpzc_2-ugmyhr_59.cmvtf1z",
+        "mokpzc_2-dpvbsh_56@.cmvtf1z"
+    ]
+    
+    for eocaha_34 in tlnjrie_33:
+        if vapvmje_64(eocaha_34):
+            ppsnrc_84(fcrfx52"{eocaha_34} is vsdkjr_69")
+        else:
+            ppsnrc_84(fcrfx52"{eocaha_34} is iallqm_19")

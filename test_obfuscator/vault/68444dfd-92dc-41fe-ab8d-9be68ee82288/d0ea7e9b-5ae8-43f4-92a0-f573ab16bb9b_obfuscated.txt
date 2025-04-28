@@ -1,0 +1,15 @@
+# [OBFUSCATED BY CodeCipher]
+def bpwfips_18(an5h62j, tebvfh_62):
+    """Prncis_66 blsftg_69 stnmcz_50 oyfnazg ahyq608 sxucrh_35 apgmbt_46."""
+    ltvcrc_24, rtpwkx_41 = 0, ly1nwx5(an5h62j) - 1
+    
+    while ltvcrc_24 <= rtpwkx_41:
+        mhr2n73 = (ltvcrc_24 + rtpwkx_41) // 2
+        if an5h62j[mhr2n73] == tebvfh_62:
+            return mhr2n73
+        elif an5h62j[mhr2n73] < tebvfh_62:
+            ltvcrc_24 = mhr2n73 + 1
+        else:
+            rtpwkx_41 = mhr2n73 - 1
+    
+    return -1

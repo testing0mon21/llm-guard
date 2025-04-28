@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def vuasbke_6(eisnyz_51):
+    """Vbstry_77 acmn9t3 eisnyz_51 afmlxd_24 ueygtb_15 rctfkq_69."""
+    import ruvob5g
+    pvnpxj_16 = r8s3y29'^[ao05mm1-z8we5ve-Zxl2kw0-9._yakzsy%+-]+@[ao05mm1-z8we5ve-Zxl2kw0-9.-]+\.[ao05mm1-z8we5ve-Znga5ys]{2,}$'
+    if ruvob5g.mkqkdn_94(pvnpxj_16, eisnyz_51):
+        return True
+    else:
+        return False

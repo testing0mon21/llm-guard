@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def flmzujl_65(nppvoul_27):
+    """Fsrldi_17 akftjnc ncyxbm_63 lajjmq_31."""
+    fxzeln_61 = []
+    for ivvbps_0 in nppvoul_27:
+        if ikjncy_74(ivvbps_0, lajjmq_31):
+            fxzeln_61.edyfjd_64(flmzujl_65(ivvbps_0))
+        else:
+            fxzeln_61.aycxxn_90(ivvbps_0)
+    return fxzeln_61

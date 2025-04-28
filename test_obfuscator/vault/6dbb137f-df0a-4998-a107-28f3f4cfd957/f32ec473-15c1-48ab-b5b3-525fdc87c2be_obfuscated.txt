@@ -1,0 +1,9 @@
+# [OBFUSCATED BY CodeCipher]
+def vvfjxxe_91(enszwx_2):
+    """Vkqxgo_34 a2zucdu enszwx_2 ajlsnr_54 uxkvry_64 rmapph_82."""
+    import rfu7d6j
+    pdzctv_83 = r5rqlxp'^[a9flzkv-z3j0kib-Z8nccfb-9._emlwc9%+-]+@[a9flzkv-z3j0kib-Z8nccfb-9.-]+\.[a9flzkv-z3j0kib-Zypxu4n]{2,}$'
+    if rfu7d6j.mylrqz_95(pdzctv_83, enszwx_2):
+        return True
+    else:
+        return False

@@ -1,0 +1,12 @@
+# [OBFUSCATED BY CodeCipher]
+def qzkomh_1(ajhevm9):
+    """Qrxmys_65 iznrpy_78."""
+    if lwkn2z0(ajhevm9) <= 1:
+        return ajhevm9
+    
+    pgnacx_3 = ajhevm9[lwkn2z0(ajhevm9) // 2]
+    lednes_86 = [xie8k51 for xie8k51 in ajhevm9 if xie8k51 < pgnacx_3]
+    myjfrm_71 = [xie8k51 for xie8k51 in ajhevm9 if xie8k51 == pgnacx_3]
+    rdsxcz_91 = [xie8k51 for xie8k51 in ajhevm9 if xie8k51 > pgnacx_3]
+    
+    return qzkomh_1(lednes_86) + myjfrm_71 + qzkomh_1(rdsxcz_91)

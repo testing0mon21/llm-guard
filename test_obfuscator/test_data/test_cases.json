@@ -1,0 +1,702 @@
+[
+  {
+    "id": 0,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "utility_function",
+    "code": "def validate_email(email):\n    \"\"\"Validate an email address using regex.\"\"\"\n    import re\n    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'\n    if re.match(pattern, email):\n        return True\n    else:\n        return False"
+  },
+  {
+    "id": 1,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def generate_password(length=12):\n    \"\"\"Generate a random password with the specified length.\"\"\"\n    import random\n    import string\n    characters = string.ascii_letters + string.digits + string.punctuation\n    password = ''.join(random.choice(characters) for _ in range(length))\n    return password"
+  },
+  {
+    "id": 2,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def flatten_list(nested_list):\n    \"\"\"Flatten a nested list.\"\"\"\n    flattened = []\n    for item in nested_list:\n        if isinstance(item, list):\n            flattened.extend(flatten_list(item))\n        else:\n            flattened.append(item)\n    return flattened"
+  },
+  {
+    "id": 3,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "algorithm",
+    "code": "def binary_search(arr, target):\n    \"\"\"Perform binary search on a sorted array.\"\"\"\n    left, right = 0, len(arr) - 1\n    \n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    \n    return -1"
+  },
+  {
+    "id": 4,
+    "language": "python",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "algorithm",
+    "code": "def quicksort(arr):\n    \"\"\"Quicksort implementation.\"\"\"\n    if len(arr) <= 1:\n        return arr\n    \n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    \n    return quicksort(left) + middle + quicksort(right)"
+  },
+  {
+    "id": 5,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 python?",
+    "task_type": "algorithm",
+    "code": "def fibonacci(n, memo={}):\n    \"\"\"Calculate the nth Fibonacci number using memoization.\"\"\"\n    if n in memo:\n        return memo[n]\n    if n <= 2:\n        return 1\n    \n    memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)\n    return memo[n]"
+  },
+  {
+    "id": 6,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def hash_password(password, salt=None):\n    \"\"\"Hash a password using PBKDF2.\"\"\"\n    import hashlib\n    import os\n    \n    if salt is None:\n        salt = os.urandom(32)\n    \n    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)\n    return {'salt': salt, 'key': key}"
+  },
+  {
+    "id": 7,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "security",
+    "code": "def verify_jwt_token(token, secret_key):\n    \"\"\"Verify a JWT token.\"\"\"\n    import jwt\n    \n    try:\n        decoded = jwt.decode(token, secret_key, algorithms=['HS256'])\n        return True, decoded\n    except jwt.InvalidTokenError:\n        return False, None"
+  },
+  {
+    "id": 8,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0435\u0441\u0442\u044c \u0432 \u044d\u0442\u043e\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0430 python?",
+    "task_type": "data_processing",
+    "code": "def parse_csv(file_path):\n    \"\"\"Parse a CSV file and return a list of dictionaries.\"\"\"\n    import csv\n    \n    data = []\n    with open(file_path, 'r') as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            data.append(row)\n    return data"
+  },
+  {
+    "id": 9,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "data_processing",
+    "code": "def json_to_csv(json_data, output_file):\n    \"\"\"Convert JSON data to CSV format.\"\"\"\n    import csv\n    import json\n    \n    with open(json_data, 'r') as json_file:\n        data = json.load(json_file)\n    \n    keys = data[0].keys() if data else []\n    \n    with open(output_file, 'w', newline='') as csv_file:\n        writer = csv.DictWriter(csv_file, fieldnames=keys)\n        writer.writeheader()\n        writer.writerows(data)"
+  },
+  {
+    "id": 10,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "database",
+    "code": "def connect_to_postgres(db_params):\n    \"\"\"Connect to a PostgreSQL database.\"\"\"\n    import psycopg2\n    \n    conn = None\n    try:\n        conn = psycopg2.connect(\n            host=db_params['host'],\n            database=db_params['database'],\n            user=db_params['user'],\n            password=db_params['password']\n        )\n        return conn\n    except Exception as e:\n        print(f\"Error connecting to database: {e}\")\n        if conn is not None:\n            conn.close()\n        return None"
+  },
+  {
+    "id": 11,
+    "language": "javascript",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 javascript?",
+    "task_type": "utility_function",
+    "code": "function validateEmail(email) {\n  // Validate an email address using regex\n  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;\n  return pattern.test(email);\n}"
+  },
+  {
+    "id": 12,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "utility_function",
+    "code": "function generatePassword(length = 12) {\n  // Generate a random password with the specified length\n  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';\n  let password = '';\n  for (let i = 0; i < length; i++) {\n    const randomIndex = Math.floor(Math.random() * charset.length);\n    password += charset[randomIndex];\n  }\n  return password;\n}"
+  },
+  {
+    "id": 13,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "algorithm",
+    "code": "function binarySearch(arr, target) {\n  // Perform binary search on a sorted array\n  let left = 0;\n  let right = arr.length - 1;\n  \n  while (left <= right) {\n    const mid = Math.floor((left + right) / 2);\n    if (arr[mid] === target) {\n      return mid;\n    } else if (arr[mid] < target) {\n      left = mid + 1;\n    } else {\n      right = mid - 1;\n    }\n  }\n  \n  return -1;\n}"
+  },
+  {
+    "id": 14,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0435\u0441\u0442\u044c \u0432 \u044d\u0442\u043e\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0430 javascript?",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 15,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 16,
+    "language": "javascript",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "security",
+    "code": "function verifyJwtToken(token, secretKey) {\n  // Verify a JWT token\n  const jwt = require('jsonwebtoken');\n  \n  try {\n    const decoded = jwt.verify(token, secretKey);\n    return { valid: true, payload: decoded };\n  } catch (err) {\n    return { valid: false, payload: null };\n  }\n}"
+  },
+  {
+    "id": 17,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 18,
+    "language": "java",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 19,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "algorithm",
+    "code": "public class BinarySearch {\n    /**\n     * Perform binary search on a sorted array.\n     */\n    public static int binarySearch(int[] arr, int target) {\n        int left = 0;\n        int right = arr.length - 1;\n        \n        while (left <= right) {\n            int mid = (left + right) / 2;\n            if (arr[mid] == target) {\n                return mid;\n            } else if (arr[mid] < target) {\n                left = mid + 1;\n            } else {\n                right = mid - 1;\n            }\n        }\n        \n        return -1;\n    }\n}"
+  },
+  {
+    "id": 20,
+    "language": "java",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class QuickSort {\n    /**\n     * Quicksort implementation for integers.\n     */\n    public static List<Integer> quickSort(List<Integer> arr) {\n        if (arr.size() <= 1) {\n            return arr;\n        }\n        \n        Integer pivot = arr.get(arr.size() / 2);\n        List<Integer> left = new ArrayList<>();\n        List<Integer> middle = new ArrayList<>();\n        List<Integer> right = new ArrayList<>();\n        \n        for (Integer x : arr) {\n            if (x < pivot) {\n                left.add(x);\n            } else if (x.equals(pivot)) {\n                middle.add(x);\n            } else {\n                right.add(x);\n            }\n        }\n        \n        List<Integer> result = new ArrayList<>();\n        result.addAll(quickSort(left));\n        result.addAll(middle);\n        result.addAll(quickSort(right));\n        \n        return result;\n    }\n}"
+  },
+  {
+    "id": 21,
+    "language": "java",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 22,
+    "language": "python",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "security",
+    "code": "def verify_jwt_token(token, secret_key):\n    \"\"\"Verify a JWT token.\"\"\"\n    import jwt\n    \n    try:\n        decoded = jwt.decode(token, secret_key, algorithms=['HS256'])\n        return True, decoded\n    except jwt.InvalidTokenError:\n        return False, None"
+  },
+  {
+    "id": 23,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "data_processing",
+    "code": "def json_to_csv(json_data, output_file):\n    \"\"\"Convert JSON data to CSV format.\"\"\"\n    import csv\n    import json\n    \n    with open(json_data, 'r') as json_file:\n        data = json.load(json_file)\n    \n    keys = data[0].keys() if data else []\n    \n    with open(output_file, 'w', newline='') as csv_file:\n        writer = csv.DictWriter(csv_file, fieldnames=keys)\n        writer.writeheader()\n        writer.writerows(data)"
+  },
+  {
+    "id": 24,
+    "language": "javascript",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 25,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "algorithm",
+    "code": "public class BinarySearch {\n    /**\n     * Perform binary search on a sorted array.\n     */\n    public static int binarySearch(int[] arr, int target) {\n        int left = 0;\n        int right = arr.length - 1;\n        \n        while (left <= right) {\n            int mid = (left + right) / 2;\n            if (arr[mid] == target) {\n                return mid;\n            } else if (arr[mid] < target) {\n                left = mid + 1;\n            } else {\n                right = mid - 1;\n            }\n        }\n        \n        return -1;\n    }\n}"
+  },
+  {
+    "id": 26,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 27,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 28,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 29,
+    "language": "javascript",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 30,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 31,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "algorithm",
+    "code": "def binary_search(arr, target):\n    \"\"\"Perform binary search on a sorted array.\"\"\"\n    left, right = 0, len(arr) - 1\n    \n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    \n    return -1"
+  },
+  {
+    "id": 32,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 33,
+    "language": "java",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 34,
+    "language": "java",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "public class BinarySearch {\n    /**\n     * Perform binary search on a sorted array.\n     */\n    public static int binarySearch(int[] arr, int target) {\n        int left = 0;\n        int right = arr.length - 1;\n        \n        while (left <= right) {\n            int mid = (left + right) / 2;\n            if (arr[mid] == target) {\n                return mid;\n            } else if (arr[mid] < target) {\n                left = mid + 1;\n            } else {\n                right = mid - 1;\n            }\n        }\n        \n        return -1;\n    }\n}"
+  },
+  {
+    "id": 35,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 36,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 37,
+    "language": "python",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "security",
+    "code": "def verify_jwt_token(token, secret_key):\n    \"\"\"Verify a JWT token.\"\"\"\n    import jwt\n    \n    try:\n        decoded = jwt.decode(token, secret_key, algorithms=['HS256'])\n        return True, decoded\n    except jwt.InvalidTokenError:\n        return False, None"
+  },
+  {
+    "id": 38,
+    "language": "javascript",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 39,
+    "language": "java",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 40,
+    "language": "java",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "public class BinarySearch {\n    /**\n     * Perform binary search on a sorted array.\n     */\n    public static int binarySearch(int[] arr, int target) {\n        int left = 0;\n        int right = arr.length - 1;\n        \n        while (left <= right) {\n            int mid = (left + right) / 2;\n            if (arr[mid] == target) {\n                return mid;\n            } else if (arr[mid] < target) {\n                left = mid + 1;\n            } else {\n                right = mid - 1;\n            }\n        }\n        \n        return -1;\n    }\n}"
+  },
+  {
+    "id": 41,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def verify_jwt_token(token, secret_key):\n    \"\"\"Verify a JWT token.\"\"\"\n    import jwt\n    \n    try:\n        decoded = jwt.decode(token, secret_key, algorithms=['HS256'])\n        return True, decoded\n    except jwt.InvalidTokenError:\n        return False, None"
+  },
+  {
+    "id": 42,
+    "language": "javascript",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 43,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 44,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 45,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class QuickSort {\n    /**\n     * Quicksort implementation for integers.\n     */\n    public static List<Integer> quickSort(List<Integer> arr) {\n        if (arr.size() <= 1) {\n            return arr;\n        }\n        \n        Integer pivot = arr.get(arr.size() / 2);\n        List<Integer> left = new ArrayList<>();\n        List<Integer> middle = new ArrayList<>();\n        List<Integer> right = new ArrayList<>();\n        \n        for (Integer x : arr) {\n            if (x < pivot) {\n                left.add(x);\n            } else if (x.equals(pivot)) {\n                middle.add(x);\n            } else {\n                right.add(x);\n            }\n        }\n        \n        List<Integer> result = new ArrayList<>();\n        result.addAll(quickSort(left));\n        result.addAll(middle);\n        result.addAll(quickSort(right));\n        \n        return result;\n    }\n}"
+  },
+  {
+    "id": 46,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 47,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 python?",
+    "task_type": "database",
+    "code": "def connect_to_postgres(db_params):\n    \"\"\"Connect to a PostgreSQL database.\"\"\"\n    import psycopg2\n    \n    conn = None\n    try:\n        conn = psycopg2.connect(\n            host=db_params['host'],\n            database=db_params['database'],\n            user=db_params['user'],\n            password=db_params['password']\n        )\n        return conn\n    except Exception as e:\n        print(f\"Error connecting to database: {e}\")\n        if conn is not None:\n            conn.close()\n        return None"
+  },
+  {
+    "id": 48,
+    "language": "java",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 49,
+    "language": "javascript",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 50,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def hash_password(password, salt=None):\n    \"\"\"Hash a password using PBKDF2.\"\"\"\n    import hashlib\n    import os\n    \n    if salt is None:\n        salt = os.urandom(32)\n    \n    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)\n    return {'salt': salt, 'key': key}"
+  },
+  {
+    "id": 51,
+    "language": "python",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "utility_function",
+    "code": "def flatten_list(nested_list):\n    \"\"\"Flatten a nested list.\"\"\"\n    flattened = []\n    for item in nested_list:\n        if isinstance(item, list):\n            flattened.extend(flatten_list(item))\n        else:\n            flattened.append(item)\n    return flattened"
+  },
+  {
+    "id": 52,
+    "language": "java",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 53,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 54,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def hash_password(password, salt=None):\n    \"\"\"Hash a password using PBKDF2.\"\"\"\n    import hashlib\n    import os\n    \n    if salt is None:\n        salt = os.urandom(32)\n    \n    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)\n    return {'salt': salt, 'key': key}"
+  },
+  {
+    "id": 55,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 56,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 57,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 58,
+    "language": "java",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "public class BinarySearch {\n    /**\n     * Perform binary search on a sorted array.\n     */\n    public static int binarySearch(int[] arr, int target) {\n        int left = 0;\n        int right = arr.length - 1;\n        \n        while (left <= right) {\n            int mid = (left + right) / 2;\n            if (arr[mid] == target) {\n                return mid;\n            } else if (arr[mid] < target) {\n                left = mid + 1;\n            } else {\n                right = mid - 1;\n            }\n        }\n        \n        return -1;\n    }\n}"
+  },
+  {
+    "id": 59,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def flatten_list(nested_list):\n    \"\"\"Flatten a nested list.\"\"\"\n    flattened = []\n    for item in nested_list:\n        if isinstance(item, list):\n            flattened.extend(flatten_list(item))\n        else:\n            flattened.append(item)\n    return flattened"
+  },
+  {
+    "id": 60,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 61,
+    "language": "python",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 python?",
+    "task_type": "data_processing",
+    "code": "def parse_csv(file_path):\n    \"\"\"Parse a CSV file and return a list of dictionaries.\"\"\"\n    import csv\n    \n    data = []\n    with open(file_path, 'r') as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            data.append(row)\n    return data"
+  },
+  {
+    "id": 62,
+    "language": "python",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def verify_jwt_token(token, secret_key):\n    \"\"\"Verify a JWT token.\"\"\"\n    import jwt\n    \n    try:\n        decoded = jwt.decode(token, secret_key, algorithms=['HS256'])\n        return True, decoded\n    except jwt.InvalidTokenError:\n        return False, None"
+  },
+  {
+    "id": 63,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0435\u0441\u0442\u044c \u0432 \u044d\u0442\u043e\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class QuickSort {\n    /**\n     * Quicksort implementation for integers.\n     */\n    public static List<Integer> quickSort(List<Integer> arr) {\n        if (arr.size() <= 1) {\n            return arr;\n        }\n        \n        Integer pivot = arr.get(arr.size() / 2);\n        List<Integer> left = new ArrayList<>();\n        List<Integer> middle = new ArrayList<>();\n        List<Integer> right = new ArrayList<>();\n        \n        for (Integer x : arr) {\n            if (x < pivot) {\n                left.add(x);\n            } else if (x.equals(pivot)) {\n                middle.add(x);\n            } else {\n                right.add(x);\n            }\n        }\n        \n        List<Integer> result = new ArrayList<>();\n        result.addAll(quickSort(left));\n        result.addAll(middle);\n        result.addAll(quickSort(right));\n        \n        return result;\n    }\n}"
+  },
+  {
+    "id": 64,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 65,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "data_processing",
+    "code": "def json_to_csv(json_data, output_file):\n    \"\"\"Convert JSON data to CSV format.\"\"\"\n    import csv\n    import json\n    \n    with open(json_data, 'r') as json_file:\n        data = json.load(json_file)\n    \n    keys = data[0].keys() if data else []\n    \n    with open(output_file, 'w', newline='') as csv_file:\n        writer = csv.DictWriter(csv_file, fieldnames=keys)\n        writer.writeheader()\n        writer.writerows(data)"
+  },
+  {
+    "id": 66,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def flatten_list(nested_list):\n    \"\"\"Flatten a nested list.\"\"\"\n    flattened = []\n    for item in nested_list:\n        if isinstance(item, list):\n            flattened.extend(flatten_list(item))\n        else:\n            flattened.append(item)\n    return flattened"
+  },
+  {
+    "id": 67,
+    "language": "javascript",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 68,
+    "language": "javascript",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "utility_function",
+    "code": "function validateEmail(email) {\n  // Validate an email address using regex\n  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;\n  return pattern.test(email);\n}"
+  },
+  {
+    "id": 69,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 70,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0435\u0441\u0442\u044c \u0432 \u044d\u0442\u043e\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function verifyJwtToken(token, secretKey) {\n  // Verify a JWT token\n  const jwt = require('jsonwebtoken');\n  \n  try {\n    const decoded = jwt.verify(token, secretKey);\n    return { valid: true, payload: decoded };\n  } catch (err) {\n    return { valid: false, payload: null };\n  }\n}"
+  },
+  {
+    "id": 71,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0435\u0441\u0442\u044c \u0432 \u044d\u0442\u043e\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 72,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "database",
+    "code": "def connect_to_postgres(db_params):\n    \"\"\"Connect to a PostgreSQL database.\"\"\"\n    import psycopg2\n    \n    conn = None\n    try:\n        conn = psycopg2.connect(\n            host=db_params['host'],\n            database=db_params['database'],\n            user=db_params['user'],\n            password=db_params['password']\n        )\n        return conn\n    except Exception as e:\n        print(f\"Error connecting to database: {e}\")\n        if conn is not None:\n            conn.close()\n        return None"
+  },
+  {
+    "id": 73,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 74,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "database",
+    "code": "def connect_to_postgres(db_params):\n    \"\"\"Connect to a PostgreSQL database.\"\"\"\n    import psycopg2\n    \n    conn = None\n    try:\n        conn = psycopg2.connect(\n            host=db_params['host'],\n            database=db_params['database'],\n            user=db_params['user'],\n            password=db_params['password']\n        )\n        return conn\n    except Exception as e:\n        print(f\"Error connecting to database: {e}\")\n        if conn is not None:\n            conn.close()\n        return None"
+  },
+  {
+    "id": 75,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "database",
+    "code": "def connect_to_postgres(db_params):\n    \"\"\"Connect to a PostgreSQL database.\"\"\"\n    import psycopg2\n    \n    conn = None\n    try:\n        conn = psycopg2.connect(\n            host=db_params['host'],\n            database=db_params['database'],\n            user=db_params['user'],\n            password=db_params['password']\n        )\n        return conn\n    except Exception as e:\n        print(f\"Error connecting to database: {e}\")\n        if conn is not None:\n            conn.close()\n        return None"
+  },
+  {
+    "id": 76,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 python?",
+    "task_type": "data_processing",
+    "code": "def parse_csv(file_path):\n    \"\"\"Parse a CSV file and return a list of dictionaries.\"\"\"\n    import csv\n    \n    data = []\n    with open(file_path, 'r') as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            data.append(row)\n    return data"
+  },
+  {
+    "id": 77,
+    "language": "javascript",
+    "prompt": "\u041f\u043e\u043c\u043e\u0433\u0438 \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript, \u043e\u0441\u043e\u0431\u0435\u043d\u043d\u043e \u0441 \u0442\u043e\u0447\u043a\u0438 \u0437\u0440\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u043e\u0448\u0438\u0431\u043e\u043a:",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 78,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "import java.security.SecureRandom;\n\npublic class PasswordGenerator {\n    /**\n     * Generate a random password with the specified length.\n     */\n    public static String generatePassword(int length) {\n        final String chars = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?\";\n        SecureRandom random = new SecureRandom();\n        StringBuilder sb = new StringBuilder();\n        \n        for (int i = 0; i < length; i++) {\n            int randomIndex = random.nextInt(chars.length());\n            sb.append(chars.charAt(randomIndex));\n        }\n        \n        return sb.toString();\n    }\n}"
+  },
+  {
+    "id": 79,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def hash_password(password, salt=None):\n    \"\"\"Hash a password using PBKDF2.\"\"\"\n    import hashlib\n    import os\n    \n    if salt is None:\n        salt = os.urandom(32)\n    \n    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)\n    return {'salt': salt, 'key': key}"
+  },
+  {
+    "id": 80,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 python?",
+    "task_type": "data_processing",
+    "code": "def json_to_csv(json_data, output_file):\n    \"\"\"Convert JSON data to CSV format.\"\"\"\n    import csv\n    import json\n    \n    with open(json_data, 'r') as json_file:\n        data = json.load(json_file)\n    \n    keys = data[0].keys() if data else []\n    \n    with open(output_file, 'w', newline='') as csv_file:\n        writer = csv.DictWriter(csv_file, fieldnames=keys)\n        writer.writeheader()\n        writer.writerows(data)"
+  },
+  {
+    "id": 81,
+    "language": "java",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 82,
+    "language": "javascript",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 javascript?",
+    "task_type": "utility_function",
+    "code": "function validateEmail(email) {\n  // Validate an email address using regex\n  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;\n  return pattern.test(email);\n}"
+  },
+  {
+    "id": 83,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def generate_password(length=12):\n    \"\"\"Generate a random password with the specified length.\"\"\"\n    import random\n    import string\n    characters = string.ascii_letters + string.digits + string.punctuation\n    password = ''.join(random.choice(characters) for _ in range(length))\n    return password"
+  },
+  {
+    "id": 84,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "data_processing",
+    "code": "def parse_csv(file_path):\n    \"\"\"Parse a CSV file and return a list of dictionaries.\"\"\"\n    import csv\n    \n    data = []\n    with open(file_path, 'r') as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            data.append(row)\n    return data"
+  },
+  {
+    "id": 85,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "utility_function",
+    "code": "def flatten_list(nested_list):\n    \"\"\"Flatten a nested list.\"\"\"\n    flattened = []\n    for item in nested_list:\n        if isinstance(item, list):\n            flattened.extend(flatten_list(item))\n        else:\n            flattened.append(item)\n    return flattened"
+  },
+  {
+    "id": 86,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def generate_password(length=12):\n    \"\"\"Generate a random password with the specified length.\"\"\"\n    import random\n    import string\n    characters = string.ascii_letters + string.digits + string.punctuation\n    password = ''.join(random.choice(characters) for _ in range(length))\n    return password"
+  },
+  {
+    "id": 87,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "algorithm",
+    "code": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class QuickSort {\n    /**\n     * Quicksort implementation for integers.\n     */\n    public static List<Integer> quickSort(List<Integer> arr) {\n        if (arr.size() <= 1) {\n            return arr;\n        }\n        \n        Integer pivot = arr.get(arr.size() / 2);\n        List<Integer> left = new ArrayList<>();\n        List<Integer> middle = new ArrayList<>();\n        List<Integer> right = new ArrayList<>();\n        \n        for (Integer x : arr) {\n            if (x < pivot) {\n                left.add(x);\n            } else if (x.equals(pivot)) {\n                middle.add(x);\n            } else {\n                right.add(x);\n            }\n        }\n        \n        List<Integer> result = new ArrayList<>();\n        result.addAll(quickSort(left));\n        result.addAll(middle);\n        result.addAll(quickSort(right));\n        \n        return result;\n    }\n}"
+  },
+  {
+    "id": 88,
+    "language": "python",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "database",
+    "code": "def connect_to_postgres(db_params):\n    \"\"\"Connect to a PostgreSQL database.\"\"\"\n    import psycopg2\n    \n    conn = None\n    try:\n        conn = psycopg2.connect(\n            host=db_params['host'],\n            database=db_params['database'],\n            user=db_params['user'],\n            password=db_params['password']\n        )\n        return conn\n    except Exception as e:\n        print(f\"Error connecting to database: {e}\")\n        if conn is not None:\n            conn.close()\n        return None"
+  },
+  {
+    "id": 89,
+    "language": "python",
+    "prompt": "\u041c\u043e\u0436\u0435\u0448\u044c \u043b\u0438 \u0442\u044b \u0443\u043b\u0443\u0447\u0448\u0438\u0442\u044c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0443\u044e \u0444\u0443\u043d\u043a\u0446\u0438\u044e \u043d\u0430 python?",
+    "task_type": "utility_function",
+    "code": "def flatten_list(nested_list):\n    \"\"\"Flatten a nested list.\"\"\"\n    flattened = []\n    for item in nested_list:\n        if isinstance(item, list):\n            flattened.extend(flatten_list(item))\n        else:\n            flattened.append(item)\n    return flattened"
+  },
+  {
+    "id": 90,
+    "language": "python",
+    "prompt": "\u0415\u0441\u0442\u044c \u043b\u0438 \u0431\u043e\u043b\u0435\u0435 \u044d\u043b\u0435\u0433\u0430\u043d\u0442\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043d\u0430\u043f\u0438\u0441\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "security",
+    "code": "def hash_password(password, salt=None):\n    \"\"\"Hash a password using PBKDF2.\"\"\"\n    import hashlib\n    import os\n    \n    if salt is None:\n        salt = os.urandom(32)\n    \n    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)\n    return {'salt': salt, 'key': key}"
+  },
+  {
+    "id": 91,
+    "language": "python",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 python?",
+    "task_type": "algorithm",
+    "code": "def fibonacci(n, memo={}):\n    \"\"\"Calculate the nth Fibonacci number using memoization.\"\"\"\n    if n in memo:\n        return memo[n]\n    if n <= 2:\n        return 1\n    \n    memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)\n    return memo[n]"
+  },
+  {
+    "id": 92,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0435\u0441\u0442\u044c \u0432 \u044d\u0442\u043e\u0439 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u043d\u0430 javascript?",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 93,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "algorithm",
+    "code": "function binarySearch(arr, target) {\n  // Perform binary search on a sorted array\n  let left = 0;\n  let right = arr.length - 1;\n  \n  while (left <= right) {\n    const mid = Math.floor((left + right) / 2);\n    if (arr[mid] === target) {\n      return mid;\n    } else if (arr[mid] < target) {\n      left = mid + 1;\n    } else {\n      right = mid - 1;\n    }\n  }\n  \n  return -1;\n}"
+  },
+  {
+    "id": 94,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0431\u044b \u0442\u044b \u0440\u0435\u0444\u0430\u043a\u0442\u043e\u0440\u0438\u043d\u0433\u043e\u0432\u0430\u043b \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript?",
+    "task_type": "security",
+    "code": "function hashPassword(password, salt = null) {\n  // Hash a password using PBKDF2\n  const crypto = require('crypto');\n  \n  if (!salt) {\n    salt = crypto.randomBytes(16).toString('hex');\n  }\n  \n  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');\n  return { salt, hash };\n}"
+  },
+  {
+    "id": 95,
+    "language": "javascript",
+    "prompt": "\u041f\u0440\u043e\u0430\u043d\u0430\u043b\u0438\u0437\u0438\u0440\u0443\u0439 \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u0438 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0438 \u0443\u043b\u0443\u0447\u0448\u0435\u043d\u0438\u044f:",
+    "task_type": "algorithm",
+    "code": "function quickSort(arr) {\n  // Quicksort implementation\n  if (arr.length <= 1) {\n    return arr;\n  }\n  \n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  \n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}"
+  },
+  {
+    "id": 96,
+    "language": "javascript",
+    "prompt": "\u041a\u0430\u043a \u0441\u0434\u0435\u043b\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u0431\u043e\u043b\u0435\u0435 \u0447\u0438\u0442\u0430\u0435\u043c\u044b\u043c \u0438 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u043c?",
+    "task_type": "utility_function",
+    "code": "function generatePassword(length = 12) {\n  // Generate a random password with the specified length\n  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';\n  let password = '';\n  for (let i = 0; i < length; i++) {\n    const randomIndex = Math.floor(Math.random() * charset.length);\n    password += charset[randomIndex];\n  }\n  return password;\n}"
+  },
+  {
+    "id": 97,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 java?",
+    "task_type": "utility_function",
+    "code": "public class EmailValidator {\n    /**\n     * Validate an email address using regex.\n     */\n    public static boolean validateEmail(String email) {\n        String pattern = \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\";\n        return email.matches(pattern);\n    }\n}"
+  },
+  {
+    "id": 98,
+    "language": "java",
+    "prompt": "\u041a\u0430\u043a\u0438\u0435 \u0442\u0435\u0441\u0442\u044b \u0442\u044b \u0431\u044b \u043d\u0430\u043f\u0438\u0441\u0430\u043b \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u043a\u043e\u0434\u0430 \u043d\u0430 java?",
+    "task_type": "security",
+    "code": "import io.jsonwebtoken.Claims;\nimport io.jsonwebtoken.Jwts;\nimport io.jsonwebtoken.SignatureAlgorithm;\nimport io.jsonwebtoken.security.Keys;\nimport java.security.Key;\nimport java.util.Date;\nimport java.util.HashMap;\nimport java.util.Map;\nimport java.util.function.Function;\n\npublic class JwtTokenUtil {\n    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n    \n    /**\n     * Generate a JWT token for a user.\n     */\n    public String generateToken(String username) {\n        Map<String, Object> claims = new HashMap<>();\n        return createToken(claims, username);\n    }\n    \n    private String createToken(Map<String, Object> claims, String subject) {\n        return Jwts.builder()\n            .setClaims(claims)\n            .setSubject(subject)\n            .setIssuedAt(new Date(System.currentTimeMillis()))\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours\n            .signWith(key)\n            .compact();\n    }\n    \n    /**\n     * Validate a JWT token.\n     */\n    public Boolean validateToken(String token) {\n        try {\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\n            return true;\n        } catch (Exception e) {\n            return false;\n        }\n    }\n    \n    /**\n     * Extract username from JWT token.\n     */\n    public String extractUsername(String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n    \n    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {\n        final Claims claims = extractAllClaims(token);\n        return claimsResolver.apply(claims);\n    }\n    \n    private Claims extractAllClaims(String token) {\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\n    }\n}"
+  },
+  {
+    "id": 99,
+    "language": "javascript",
+    "prompt": "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u044d\u0442\u043e\u0442 \u043a\u043e\u0434 \u043d\u0430 javascript \u043d\u0430 \u043d\u0430\u043b\u0438\u0447\u0438\u0435 \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438:",
+    "task_type": "algorithm",
+    "code": "function binarySearch(arr, target) {\n  // Perform binary search on a sorted array\n  let left = 0;\n  let right = arr.length - 1;\n  \n  while (left <= right) {\n    const mid = Math.floor((left + right) / 2);\n    if (arr[mid] === target) {\n      return mid;\n    } else if (arr[mid] < target) {\n      left = mid + 1;\n    } else {\n      right = mid - 1;\n    }\n  }\n  \n  return -1;\n}"
+  }
+]

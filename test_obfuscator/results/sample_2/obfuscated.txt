@@ -1,0 +1,10 @@
+# [OBFUSCATED BY CodeCipher]
+def fpttsml_10(nwhgwml_46):
+    """Fbuabu_12 aeakdjf nyeqhw_77 lxqvko_3."""
+    fbwvmx_14 = []
+    for itwjmi_15 in nwhgwml_46:
+        if itngbe_55(itwjmi_15, lxqvko_3):
+            fbwvmx_14.ejylyq_39(fpttsml_10(itwjmi_15))
+        else:
+            fbwvmx_14.aohbeu_57(itwjmi_15)
+    return fbwvmx_14

@@ -8,42 +8,47 @@ LABEL org.opencontainers.image.licenses=MIT
 # Install system packages needed for building
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    curl \
+    git \
+    openjdk-17-jre-headless \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Создание пользователя с UID 1000 (стандартный для Docker)
 RUN useradd -m -u 1000 user
-USER user
-ENV HOME=/home/user \
-    PATH=/home/user/.local/bin:$PATH
 
-# ensures that the python output is sent straight to terminal (e.g. your container log)
-# without being first buffered and that you can see the output of your application (e.g. django logs)
-# in real time. Equivalent to python -u: https://docs.python.org/3/using/cmdline.html#cmdoption-u
-ENV PYTHONUNBUFFERED 1
+# Setting up environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    HOME=/home/user \
+    VIRTUAL_ENV=/opt/venv
 
-# https://docs.python.org/3/using/cmdline.html#envvar-PYTHONDONTWRITEBYTECODE
-# Prevents Python from writing .pyc files to disk
-ENV PYTHONDONTWRITEBYTECODE 1
+# Рабочая директория в контейнере
+WORKDIR /app
+ENV PYTHONPATH=/app:${PYTHONPATH}
 
-# Set up a working directory
-WORKDIR $HOME/app
-
-# Copy pyproject.toml and other necessary files for installation
+# Копирование необходимых файлов
 COPY --chown=user:user pyproject.toml ./
 COPY --chown=user:user app ./app
+COPY --chown=user:user generate_antlr_grammars.sh ./
 
-# Install the project's dependencies
+# Установка зависимостей и базовых моделей
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir ".[cpu]"
+    pip install --no-cache-dir ".[cpu]" && \
+    python -m spacy download en_core_web_sm && \
+    chmod +x ./generate_antlr_grammars.sh && \
+    ./generate_antlr_grammars.sh && \
+    pip install --no-cache-dir antlr4-python3-runtime==4.9.3
 
-RUN python -m spacy download en_core_web_sm
+# Switching to a non-root user
+USER user
 
-COPY --chown=user:user ./config/scanners.yml ./config/scanners.yml
-COPY --chown=user:user entrypoint.sh ./entrypoint.sh
+# Preloading language models
+RUN python -c "from llm_guard.input_scanners.sensitive_information import preload_language; preload_language('en')"
 
-RUN chmod +x ./entrypoint.sh
+# Запуск приложения
+ENV PORT=8000
+EXPOSE ${PORT}
 
-ENV PYTHONPATH=$HOME/app
-
-EXPOSE 8000
-
-ENTRYPOINT ["./entrypoint.sh"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT}
