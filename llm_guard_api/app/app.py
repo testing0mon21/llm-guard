@@ -67,6 +67,7 @@ from .schemas import (
 from .util import configure_logger
 from .version import __version__
 from .image_scanner import ConfidentialImageScanner, DependencyError
+from .vision import initialize_vision_models
 
 LOGGER = structlog.getLogger(__name__)
 
@@ -82,6 +83,13 @@ def create_app() -> FastAPI:
     configure_logger(log_level, config.app.log_json)
 
     configure_otel(config.app.name, config.tracing, config.metrics)
+
+    # Initialize vision models once (PaddleOCR en/ru ONNX, optional YOLO ONNX)
+    initialize_vision_models(
+        languages=["en", "ru"],
+        yolo_onnx_path=os.getenv("YOLO_ONNX_PATH", ""),
+        yolo_confidence_threshold=float(os.getenv("YOLO_CONF", "0.25")),
+    )
 
     vault = Vault() if LLM_GUARD_AVAILABLE else None  # type: ignore
     input_scanners_func = _get_input_scanners_function(config, vault)

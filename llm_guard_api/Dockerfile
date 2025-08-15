@@ -32,10 +32,13 @@ ENV PYTHONPATH=/app:${PYTHONPATH}
 COPY --chown=user:user pyproject.toml ./
 COPY --chown=user:user app ./app
 COPY --chown=user:user generate_antlr_grammars.sh ./
+COPY --chown=user:user preload_models.py ./preload_models.py
+COPY --chown=user:user config ./config
 
 # Установка зависимостей и базовых моделей
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir ".[cpu]" && \
+    pip install --no-cache-dir "./[cpu]" && \
+    pip install --no-cache-dir opencv-python-headless pillow paddleocr ultralytics && \
     python -m spacy download en_core_web_sm && \
     chmod +x ./generate_antlr_grammars.sh && \
     ./generate_antlr_grammars.sh && \
@@ -44,8 +47,11 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Switching to a non-root user
 USER user
 
-# Preloading language models
-RUN python -c "from llm_guard.input_scanners.sensitive_information import preload_language; preload_language('en')"
+# Preloading language & vision models (PaddleOCR en/ru ONNX, YOLO ONNX if provided)
+# You can provide a custom YOLO ONNX during build or later via env YOLO_ONNX_PATH
+ENV YOLO_ONNX_PATH=""
+ENV YOLO_CONF="0.25"
+RUN python ./preload_models.py
 
 # Запуск приложения
 ENV PORT=8000

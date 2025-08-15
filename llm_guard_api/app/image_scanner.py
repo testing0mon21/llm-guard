@@ -47,17 +47,9 @@ class ConfidentialImageScanner:
         self.yolo_model = None
         self.yolo_confidence_threshold = yolo_confidence_threshold
 
-        # Lazy load dependencies
+        # Models are initialized globally in app.vision
         self._paddle_ocr = None
-        if yolo_model_path:
-            try:
-                from ultralytics import YOLO  # type: ignore
-
-                self.yolo_model = YOLO(yolo_model_path)
-            except Exception as exc:  # pragma: no cover - optional dependency
-                raise DependencyError(
-                    "Failed to load YOLO11 model. Ensure 'ultralytics' is installed and model path is valid."
-                ) from exc
+        self.yolo_model = None
 
     def _ensure_cv2(self) -> None:
         if cv2 is None:
@@ -65,18 +57,16 @@ class ConfidentialImageScanner:
                 "OpenCV is required. Install 'opencv-python-headless' to enable image scanning."
             )
 
-    def _get_ocr(self):
-        if self._paddle_ocr is None:
-            try:
-                from paddleocr import PaddleOCR  # type: ignore
+    def _get_ocr_models(self):
+        try:
+            from .vision import get_ocr_models
 
-                # Enable angle classification for better robustness
-                self._paddle_ocr = PaddleOCR(use_angle_cls=True, lang="en")
-            except Exception as exc:  # pragma: no cover - optional dependency
-                raise DependencyError(
-                    "PaddleOCR is required. Install 'paddleocr' and 'paddlepaddle' to enable OCR."
-                ) from exc
-        return self._paddle_ocr
+            models = get_ocr_models()
+            if not models:
+                raise DependencyError("PaddleOCR models are not initialized")
+            return models
+        except Exception as exc:
+            raise DependencyError("PaddleOCR is required and must be initialized") from exc
 
     @staticmethod
     def _compile_patterns(patterns: Optional[List[str]]):
@@ -155,12 +145,15 @@ class ConfidentialImageScanner:
         return x1, y1, x2, y2
 
     def _detect_candidates_yolo(self, img: np.ndarray) -> List[Tuple[int, int, int, int]]:
-        if self.yolo_model is None:
-            return []
-
         try:
-            results = self.yolo_model.predict(img, conf=self.yolo_confidence_threshold, verbose=False)
-        except Exception:  # pragma: no cover - optional dependency
+            from .vision import get_yolo_model, get_yolo_confidence_threshold
+
+            model = get_yolo_model()
+            if model is None:
+                return []
+            conf = get_yolo_confidence_threshold()
+            results = model.predict(img, conf=conf, verbose=False)
+        except Exception:
             return []
 
         boxes: List[Tuple[int, int, int, int]] = []
@@ -176,7 +169,7 @@ class ConfidentialImageScanner:
         return boxes
 
     def _detect_and_recognize(self, img: np.ndarray) -> List[Tuple[List[Tuple[int, int]], str, float]]:
-        ocr = self._get_ocr()
+        ocr_models = self._get_ocr_models()
         h, w = img.shape[:2]
 
         # Candidate crops from YOLO to guide OCR
@@ -184,16 +177,17 @@ class ConfidentialImageScanner:
         results: List[Tuple[List[Tuple[int, int]], str, float]] = []
 
         def run_ocr(region: np.ndarray, x_offset: int = 0, y_offset: int = 0):
-            ocr_result = ocr.ocr(region, cls=True)
-            if not ocr_result:
-                return
-            for line in ocr_result[0]:
-                pts = line[0]
-                txt = line[1][0]
-                conf = float(line[1][1])
-                # pts: 4 points [[x,y],...]
-                quad = [(int(p[0]) + x_offset, int(p[1]) + y_offset) for p in pts]
-                results.append((quad, txt, conf))
+            for ocr in ocr_models:
+                ocr_result = ocr.ocr(region, cls=True)
+                if not ocr_result:
+                    continue
+                for line in ocr_result[0]:
+                    pts = line[0]
+                    txt = line[1][0]
+                    conf = float(line[1][1])
+                    # pts: 4 points [[x,y],...]
+                    quad = [(int(p[0]) + x_offset, int(p[1]) + y_offset) for p in pts]
+                    results.append((quad, txt, conf))
 
         if len(candidate_boxes) == 0:
             run_ocr(img)
