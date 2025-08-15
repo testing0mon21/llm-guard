@@ -16,15 +16,21 @@ class DependencyError(RuntimeError):
 
 # BGR colors for OpenCV
 PATTERN_STYLES: Dict[str, Dict[str, Any]] = {
-    "CREDIT_CARD_RE": {"label": "Credit Card", "color": (0, 0, 255)},  # red
-    "EMAIL_ADDRESS_RE": {"label": "Email", "color": (255, 0, 0)},  # blue
-    "US_SSN_RE": {"label": "SSN", "color": (0, 140, 255)},  # orange
-    "PHONE_NUMBER_WITH_EXT": {"label": "Phone", "color": (0, 255, 255)},  # yellow
-    "PHONE_NUMBER_ZH": {"label": "Phone", "color": (0, 255, 255)},
-    "UUID": {"label": "UUID", "color": (128, 128, 128)},  # gray
+    "CREDIT_CARD_RE": {"label": "Credit Card"},
+    "EMAIL_ADDRESS_RE": {"label": "Email"},
+    "US_SSN_RE": {"label": "SSN"},
+    "PHONE_NUMBER_WITH_EXT": {"label": "Phone"},
+    "PHONE_NUMBER_ZH": {"label": "Phone"},
+    "UUID": {"label": "UUID"},
 }
 
-DEFAULT_STYLE = {"label": "Sensitive", "color": (32, 32, 32)}
+DEFAULT_STYLE = {"label": "Sensitive"}
+
+# Colors (BGR)
+MASK_FILL_COLOR = (0, 0, 0)          # black mask fill
+LABEL_BG_COLOR = (0, 0, 0)           # black label bar background
+LABEL_TEXT_COLOR = (255, 255, 255)   # white label text
+LABEL_SHADOW_COLOR = (0, 0, 0)       # black shadow for text
 
 
 class ConfidentialImageScanner:
@@ -207,7 +213,7 @@ class ConfidentialImageScanner:
         return min(xs), min(ys), max(xs), max(ys)
 
     @staticmethod
-    def _draw_label(img: np.ndarray, bbox: Tuple[int, int, int, int], label: str, color: Tuple[int, int, int]):
+    def _draw_label(img: np.ndarray, bbox: Tuple[int, int, int, int], label: str):
         x1, y1, x2, y2 = bbox
         # Text settings
         font = cv2.FONT_HERSHEY_SIMPLEX  # type: ignore
@@ -221,20 +227,19 @@ class ConfidentialImageScanner:
         bar_h = text_h + 2 * pad
         bar_y2 = max(y1, bar_h)
         bar_y1 = bar_y2 - bar_h
-        # Draw filled rect for label background
-        cv2.rectangle(img, (bar_x1, bar_y1), (bar_x2, bar_y2), color, thickness=-1)  # type: ignore
-        # Draw label text (white with black shadow)
+        # Draw filled rect for label background (black)
+        cv2.rectangle(img, (bar_x1, bar_y1), (bar_x2, bar_y2), LABEL_BG_COLOR, thickness=-1)  # type: ignore
+        # Draw label text white with black shadow
         text_x = bar_x1 + pad
         text_y = bar_y2 - pad
-        cv2.putText(img, label, (text_x, text_y), font, scale, (0, 0, 0), thickness + 2, cv2.LINE_AA)  # type: ignore
-        cv2.putText(img, label, (text_x, text_y), font, scale, (255, 255, 255), thickness, cv2.LINE_AA)  # type: ignore
+        cv2.putText(img, label, (text_x, text_y), font, scale, LABEL_SHADOW_COLOR, thickness + 2, cv2.LINE_AA)  # type: ignore
+        cv2.putText(img, label, (text_x, text_y), font, scale, LABEL_TEXT_COLOR, thickness, cv2.LINE_AA)  # type: ignore
 
     def _mask_bbox_with_label(
         self,
         img: np.ndarray,
         bbox: Tuple[int, int, int, int],
         *,
-        color: Tuple[int, int, int],
         label: str,
         mode: str = "partial",
     ) -> None:
@@ -243,15 +248,15 @@ class ConfidentialImageScanner:
         h = max(1, y2 - y1)
 
         if mode == "full":
-            cv2.rectangle(img, (x1, y1), (x2, y2), color, thickness=-1)  # type: ignore
+            cv2.rectangle(img, (x1, y1), (x2, y2), MASK_FILL_COLOR, thickness=-1)  # type: ignore
         else:
             # Partial: mask central band 60%
             band_x1 = int(x1 + 0.2 * w)
             band_x2 = int(x1 + 0.8 * w)
-            cv2.rectangle(img, (band_x1, y1), (band_x2, y2), color, thickness=-1)  # type: ignore
+            cv2.rectangle(img, (band_x1, y1), (band_x2, y2), MASK_FILL_COLOR, thickness=-1)  # type: ignore
 
-        # Label on top
-        self._draw_label(img, bbox, label, color)
+        # Label on top (white text)
+        self._draw_label(img, bbox, label)
 
     @staticmethod
     def _get_style_for_pattern(pattern_name: str) -> Dict[str, Any]:
@@ -286,7 +291,6 @@ class ConfidentialImageScanner:
                         {
                             "pattern": name,
                             "label": style.get("label"),
-                            "color": list(style.get("color", (0, 0, 0))),  # type: ignore
                             "text": txt,
                             "confidence": conf,
                             "bbox": {
@@ -297,11 +301,10 @@ class ConfidentialImageScanner:
                             },
                         }
                     )
-                    # Redact and label
+                    # Redact and label (black mask, white label)
                     self._mask_bbox_with_label(
                         img,
                         bbox,
-                        color=tuple(style.get("color", (0, 0, 0))),  # type: ignore
                         label=str(style.get("label", name)),
                         mode=self.redact_mode,
                     )
