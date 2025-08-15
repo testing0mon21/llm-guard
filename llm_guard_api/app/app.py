@@ -3,6 +3,8 @@ import concurrent.futures
 import os
 import time
 from typing import Annotated, Callable, List
+from pathlib import Path
+import base64
 
 import structlog
 from fastapi import Depends, FastAPI, HTTPException, Response, status
@@ -23,10 +25,20 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from llm_guard import scan_output, scan_prompt
-from llm_guard.input_scanners.base import Scanner as InputScanner
-from llm_guard.output_scanners.base import Scanner as OutputScanner
-from llm_guard.vault import Vault
+try:
+    from llm_guard import scan_output, scan_prompt
+    from llm_guard.input_scanners.base import Scanner as InputScanner
+    from llm_guard.output_scanners.base import Scanner as OutputScanner
+    from llm_guard.vault import Vault
+
+    LLM_GUARD_AVAILABLE = True
+except Exception:  # pragma: no cover - optional dependency
+    scan_output = None  # type: ignore
+    scan_prompt = None  # type: ignore
+    InputScanner = object  # type: ignore
+    OutputScanner = object  # type: ignore
+    Vault = object  # type: ignore
+    LLM_GUARD_AVAILABLE = False
 
 from .config import AuthConfig, Config, get_config
 from .otel import configure_otel, instrument_app
@@ -49,9 +61,12 @@ from .schemas import (
     ScanPromptResponse,
     DeobfuscateRequest,
     DeobfuscateResponse,
+    ScanImageRequest,
+    ScanImageResponse,
 )
 from .util import configure_logger
 from .version import __version__
+from .image_scanner import ConfidentialImageScanner, DependencyError
 
 LOGGER = structlog.getLogger(__name__)
 
@@ -68,7 +83,7 @@ def create_app() -> FastAPI:
 
     configure_otel(config.app.name, config.tracing, config.metrics)
 
-    vault = Vault()
+    vault = Vault() if LLM_GUARD_AVAILABLE else None  # type: ignore
     input_scanners_func = _get_input_scanners_function(config, vault)
     output_scanners_func = _get_output_scanners_function(config, vault)
 
@@ -126,7 +141,12 @@ def _check_auth_function(auth_config: AuthConfig) -> callable:
     return check_auth
 
 
-def _get_input_scanners_function(config: Config, vault: Vault) -> Callable:
+def _get_input_scanners_function(config: Config, vault):  # type: ignore
+    if not LLM_GUARD_AVAILABLE:
+        def _noop() -> List[InputScanner]:  # type: ignore
+            return []
+        return _noop
+
     scanners = []
     if not config.app.lazy_load:
         LOGGER.debug("Loading input scanners")
@@ -144,7 +164,12 @@ def _get_input_scanners_function(config: Config, vault: Vault) -> Callable:
     return get_cached_scanners
 
 
-def _get_output_scanners_function(config: Config, vault: Vault) -> Callable:
+def _get_output_scanners_function(config: Config, vault):  # type: ignore
+    if not LLM_GUARD_AVAILABLE:
+        def _noop() -> List[OutputScanner]:  # type: ignore
+            return []
+        return _noop
+
     scanners = []
     if not config.app.lazy_load:
         LOGGER.debug("Loading output scanners")
@@ -187,7 +212,7 @@ def register_routes(
     @app.get("/", tags=["Main"])
     @limiter.exempt
     async def read_root():
-        return {"name": "LLM Guard API"}
+        return {"name": "LLM Guard API", "llm_guard_available": LLM_GUARD_AVAILABLE}
 
     @app.get("/healthz", tags=["Health"])
     @limiter.exempt
@@ -199,361 +224,404 @@ def register_routes(
     async def read_liveliness():
         return JSONResponse({"status": "ready"})
 
-    @app.post(
-        "/analyze/output",
-        tags=["Analyze"],
-        response_model=AnalyzeOutputResponse,
-        status_code=status.HTTP_200_OK,
-        description="Analyze an output and return the sanitized output and the results of the scanners",
-    )
-    async def submit_analyze_output(
-        request: AnalyzeOutputRequest,
-        _: Annotated[bool, Depends(check_auth)],
-        output_scanners: List[OutputScanner] = Depends(output_scanners_func),
-    ) -> AnalyzeOutputResponse:
-        LOGGER.debug(
-            "Received analyze output request",
-            request_prompt=request.prompt,
-            request_output=request.output,
+    if LLM_GUARD_AVAILABLE:
+        @app.post(
+            "/analyze/output",
+            tags=["Analyze"],
+            response_model=AnalyzeOutputResponse,
+            status_code=status.HTTP_200_OK,
+            description="Analyze an output and return the sanitized output and the results of the scanners",
         )
+        async def submit_analyze_output(
+            request: AnalyzeOutputRequest,
+            _: Annotated[bool, Depends(check_auth)],
+            output_scanners: List[OutputScanner] = Depends(output_scanners_func),
+        ) -> AnalyzeOutputResponse:
+            LOGGER.debug(
+                "Received analyze output request",
+                request_prompt=request.prompt,
+                request_output=request.output,
+            )
 
-        if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
-            LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
-            output_scanners = [
-                scanner
-                for scanner in output_scanners
-                if type(scanner).__name__ not in request.scanners_suppress
-            ]
+            if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
+                LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
+                output_scanners = [
+                    scanner
+                    for scanner in output_scanners
+                    if type(scanner).__name__ not in request.scanners_suppress
+                ]
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            loop = asyncio.get_event_loop()
-            try:
-                start_time = time.time()
-                sanitized_output, results_valid, results_score = await asyncio.wait_for(
-                    loop.run_in_executor(
-                        executor,
-                        scan_output,
-                        output_scanners,
-                        request.prompt,
-                        request.output,
-                        config.app.scan_fail_fast,
-                    ),
-                    timeout=config.app.scan_output_timeout,
-                )
-
-                for scanner, valid in results_valid.items():
-                    scanners_valid_counter.add(
-                        1, {"source": "output", "valid": valid, "scanner": scanner}
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                loop = asyncio.get_event_loop()
+                try:
+                    start_time = time.time()
+                    sanitized_output, results_valid, results_score = await asyncio.wait_for(
+                        loop.run_in_executor(
+                            executor,
+                            scan_output,
+                            output_scanners,
+                            request.prompt,
+                            request.output,
+                            config.app.scan_fail_fast,
+                        ),
+                        timeout=config.app.scan_output_timeout,
                     )
 
-                response = AnalyzeOutputResponse(
-                    sanitized_output=sanitized_output,
-                    is_valid=all(results_valid.values()),
-                    scanners=results_score,
+                    for scanner, valid in results_valid.items():
+                        scanners_valid_counter.add(
+                            1, {"source": "output", "valid": valid, "scanner": scanner}
+                        )
+
+                    response = AnalyzeOutputResponse(
+                        sanitized_output=sanitized_output,
+                        is_valid=all(results_valid.values()),
+                        scanners=results_score,
+                    )
+                    elapsed_time = time.time() - start_time
+                    LOGGER.debug(
+                        "Sanitized response",
+                        scores=results_score,
+                        elapsed_time_seconds=round(elapsed_time, 6),
+                    )
+                except asyncio.TimeoutError:
+                    raise HTTPException(
+                        status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Request timeout."
+                    )
+
+            return response
+
+        @app.post(
+            "/scan/output",
+            tags=["Analyze"],
+            response_model=ScanOutputResponse,
+            status_code=status.HTTP_200_OK,
+            description="Scans an output running scanners in parallel without sanitizing the prompt",
+        )
+        async def submit_scan_output(
+            request: ScanOutputRequest,
+            _: Annotated[bool, Depends(check_auth)],
+            output_scanners: List[OutputScanner] = Depends(output_scanners_func),
+        ) -> ScanOutputResponse:
+            LOGGER.debug(
+                "Received scan output request",
+                request_prompt=request.prompt,
+                request_output=request.output,
+            )
+
+            if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
+                LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
+                output_scanners = [
+                    scanner
+                    for scanner in output_scanners
+                    if type(scanner).__name__ not in request.scanners_suppress
+                ]
+
+            result_is_valid = True
+            results_score = {}
+
+            start_time = time.time()
+            try:
+                tasks = [
+                    ascan_output(scanner, request.prompt, request.output) for scanner in output_scanners
+                ]
+                results = await asyncio.wait_for(
+                    asyncio.gather(*tasks, return_exceptions=not config.app.scan_fail_fast),
+                    config.app.scan_output_timeout,
                 )
-                elapsed_time = time.time() - start_time
-                LOGGER.debug(
-                    "Sanitized response",
-                    scores=results_score,
-                    elapsed_time_seconds=round(elapsed_time, 6),
-                )
+
+                for result in results:
+                    if isinstance(result, InputIsInvalid):
+                        result_is_valid = False
+                        results_score[result.scanner_name] = result.risk_score
+
+                        continue
+
+                    scanner_name, risk_score = result
+                    results_score[scanner_name] = risk_score
+            except InputIsInvalid as e:
+                result_is_valid = False
+                results_score[e.scanner_name] = e.risk_score
             except asyncio.TimeoutError:
                 raise HTTPException(
                     status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Request timeout."
                 )
 
-        return response
-
-    @app.post(
-        "/scan/output",
-        tags=["Analyze"],
-        response_model=ScanOutputResponse,
-        status_code=status.HTTP_200_OK,
-        description="Scans an output running scanners in parallel without sanitizing the prompt",
-    )
-    async def submit_scan_output(
-        request: ScanOutputRequest,
-        _: Annotated[bool, Depends(check_auth)],
-        output_scanners: List[OutputScanner] = Depends(output_scanners_func),
-    ) -> ScanOutputResponse:
-        LOGGER.debug(
-            "Received scan output request",
-            request_prompt=request.prompt,
-            request_output=request.output,
-        )
-
-        if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
-            LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
-            output_scanners = [
-                scanner
-                for scanner in output_scanners
-                if type(scanner).__name__ not in request.scanners_suppress
-            ]
-
-        result_is_valid = True
-        results_score = {}
-
-        start_time = time.time()
-        try:
-            tasks = [
-                ascan_output(scanner, request.prompt, request.output) for scanner in output_scanners
-            ]
-            results = await asyncio.wait_for(
-                asyncio.gather(*tasks, return_exceptions=not config.app.scan_fail_fast),
-                config.app.scan_output_timeout,
+            response = ScanOutputResponse(
+                is_valid=result_is_valid,
+                scanners=results_score,
             )
 
-            for result in results:
-                if isinstance(result, InputIsInvalid):
-                    result_is_valid = False
-                    results_score[result.scanner_name] = result.risk_score
-
-                    continue
-
-                scanner_name, risk_score = result
-                results_score[scanner_name] = risk_score
-        except InputIsInvalid as e:
-            result_is_valid = False
-            results_score[e.scanner_name] = e.risk_score
-        except asyncio.TimeoutError:
-            raise HTTPException(
-                status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Request timeout."
+            elapsed_time = time.time() - start_time
+            LOGGER.debug(
+                "Scan output response returned",
+                scores=results_score,
+                elapsed_time_seconds=round(elapsed_time, 6),
             )
 
-        response = ScanOutputResponse(
-            is_valid=result_is_valid,
-            scanners=results_score,
+            return response
+
+        @app.post(
+            "/analyze/prompt",
+            tags=["Analyze"],
+            response_model=AnalyzePromptResponse,
+            status_code=status.HTTP_200_OK,
+            description="Analyze a prompt and return the sanitized prompt and the results of the scanners",
         )
+        async def submit_analyze_prompt(
+            request: AnalyzePromptRequest,
+            _: Annotated[bool, Depends(check_auth)],
+            response: Response,
+            input_scanners: List[InputScanner] = Depends(input_scanners_func),
+        ) -> AnalyzePromptResponse:
+            LOGGER.debug("Received analyze prompt request", request_prompt=request.prompt)
 
-        elapsed_time = time.time() - start_time
-        LOGGER.debug(
-            "Scan output response returned",
-            scores=results_score,
-            elapsed_time_seconds=round(elapsed_time, 6),
-        )
+            if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
+                LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
+                input_scanners = [
+                    scanner
+                    for scanner in input_scanners
+                    if type(scanner).__name__ not in request.scanners_suppress
+                ]
 
-        return response
-
-    @app.post(
-        "/analyze/prompt",
-        tags=["Analyze"],
-        response_model=AnalyzePromptResponse,
-        status_code=status.HTTP_200_OK,
-        description="Analyze a prompt and return the sanitized prompt and the results of the scanners",
-    )
-    async def submit_analyze_prompt(
-        request: AnalyzePromptRequest,
-        _: Annotated[bool, Depends(check_auth)],
-        response: Response,
-        input_scanners: List[InputScanner] = Depends(input_scanners_func),
-    ) -> AnalyzePromptResponse:
-        LOGGER.debug("Received analyze prompt request", request_prompt=request.prompt)
-
-        if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
-            LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
-            input_scanners = [
-                scanner
-                for scanner in input_scanners
-                if type(scanner).__name__ not in request.scanners_suppress
-            ]
-
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            loop = asyncio.get_event_loop()
-            try:
-                start_time = time.time()
-                sanitized_prompt, results_valid, results_score = await asyncio.wait_for(
-                    loop.run_in_executor(
-                        executor,
-                        scan_prompt,
-                        input_scanners,
-                        request.prompt,
-                        config.app.scan_fail_fast,
-                    ),
-                    timeout=config.app.scan_prompt_timeout,
-                )
-
-                for scanner, valid in results_valid.items():
-                    scanners_valid_counter.add(
-                        1, {"source": "input", "valid": valid, "scanner": scanner}
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                loop = asyncio.get_event_loop()
+                try:
+                    start_time = time.time()
+                    sanitized_prompt, results_valid, results_score = await asyncio.wait_for(
+                        loop.run_in_executor(
+                            executor,
+                            scan_prompt,
+                            input_scanners,
+                            request.prompt,
+                            config.app.scan_fail_fast,
+                        ),
+                        timeout=config.app.scan_prompt_timeout,
                     )
 
-                response = AnalyzePromptResponse(
-                    sanitized_prompt=sanitized_prompt,
-                    is_valid=all(results_valid.values()),
-                    scanners=results_score,
+                    for scanner, valid in results_valid.items():
+                        scanners_valid_counter.add(
+                            1, {"source": "input", "valid": valid, "scanner": scanner}
+                        )
+
+                    response = AnalyzePromptResponse(
+                        sanitized_prompt=sanitized_prompt,
+                        is_valid=all(results_valid.values()),
+                        scanners=results_score,
+                    )
+
+                    elapsed_time = time.time() - start_time
+                    LOGGER.debug(
+                        "Sanitized prompt response returned",
+                        scores=results_score,
+                        elapsed_time_seconds=round(elapsed_time, 6),
+                    )
+                except asyncio.TimeoutError:
+                    raise HTTPException(
+                        status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Request timeout."
+                    )
+
+            return response
+
+        @app.post(
+            "/scan/prompt",
+            tags=["Analyze"],
+            response_model=ScanPromptResponse,
+            status_code=status.HTTP_200_OK,
+            description="Scans a prompt running scanners in parallel without sanitizing the prompt",
+        )
+        async def submit_scan_prompt(
+            request: ScanPromptRequest,
+            _: Annotated[bool, Depends(check_auth)],
+            input_scanners: List[InputScanner] = Depends(input_scanners_func),
+        ) -> ScanPromptResponse:
+            LOGGER.debug("Received scan prompt request", request_prompt=request.prompt)
+
+            if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
+                LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
+                input_scanners = [
+                    scanner
+                    for scanner in input_scanners
+                    if type(scanner).__name__ not in request.scanners_suppress
+                ]
+
+            result_is_valid = True
+            results_score = {}
+
+            start_time = time.time()
+            try:
+                tasks = [ascan_prompt(scanner, request.prompt) for scanner in input_scanners]
+                results = await asyncio.wait_for(
+                    asyncio.gather(*tasks, return_exceptions=not config.app.scan_fail_fast),
+                    config.app.scan_prompt_timeout,
                 )
 
-                elapsed_time = time.time() - start_time
-                LOGGER.debug(
-                    "Sanitized prompt response returned",
-                    scores=results_score,
-                    elapsed_time_seconds=round(elapsed_time, 6),
-                )
+                for result in results:
+                    if isinstance(result, InputIsInvalid):
+                        result_is_valid = False
+                        results_score[result.scanner_name] = result.risk_score
+
+                        continue
+
+                    scanner_name, risk_score = result
+                    results_score[scanner_name] = risk_score
+            except InputIsInvalid as e:
+                result_is_valid = False
+                results_score[e.scanner_name] = e.risk_score
             except asyncio.TimeoutError:
                 raise HTTPException(
                     status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Request timeout."
                 )
 
-        return response
-
-    @app.post(
-        "/scan/prompt",
-        tags=["Analyze"],
-        response_model=ScanPromptResponse,
-        status_code=status.HTTP_200_OK,
-        description="Scans a prompt running scanners in parallel without sanitizing the prompt",
-    )
-    async def submit_scan_prompt(
-        request: ScanPromptRequest,
-        _: Annotated[bool, Depends(check_auth)],
-        input_scanners: List[InputScanner] = Depends(input_scanners_func),
-    ) -> ScanPromptResponse:
-        LOGGER.debug("Received scan prompt request", request_prompt=request.prompt)
-
-        if request.scanners_suppress is not None and len(request.scanners_suppress) > 0:
-            LOGGER.debug("Suppressing scanners", scanners=request.scanners_suppress)
-            input_scanners = [
-                scanner
-                for scanner in input_scanners
-                if type(scanner).__name__ not in request.scanners_suppress
-            ]
-
-        result_is_valid = True
-        results_score = {}
-
-        start_time = time.time()
-        try:
-            tasks = [ascan_prompt(scanner, request.prompt) for scanner in input_scanners]
-            results = await asyncio.wait_for(
-                asyncio.gather(*tasks, return_exceptions=not config.app.scan_fail_fast),
-                config.app.scan_prompt_timeout,
+            response = ScanPromptResponse(
+                is_valid=result_is_valid,
+                scanners=results_score,
             )
 
-            for result in results:
-                if isinstance(result, InputIsInvalid):
-                    result_is_valid = False
-                    results_score[result.scanner_name] = result.risk_score
-
-                    continue
-
-                scanner_name, risk_score = result
-                results_score[scanner_name] = risk_score
-        except InputIsInvalid as e:
-            result_is_valid = False
-            results_score[e.scanner_name] = e.risk_score
-        except asyncio.TimeoutError:
-            raise HTTPException(
-                status_code=status.HTTP_408_REQUEST_TIMEOUT, detail="Request timeout."
+            elapsed_time = time.time() - start_time
+            LOGGER.debug(
+                "Scan prompt response returned",
+                scores=results_score,
+                elapsed_time_seconds=round(elapsed_time, 6),
             )
 
-        response = ScanPromptResponse(
-            is_valid=result_is_valid,
-            scanners=results_score,
+            return response
+
+        @app.post(
+            "/deobfuscate",
+            tags=["CodeCipher"],
+            response_model=DeobfuscateResponse,
+            status_code=status.HTTP_200_OK,
+            description="Деобфусцирует текст, обработанный с помощью CodeCipherObfuscator, используя информацию из vault",
         )
-
-        elapsed_time = time.time() - start_time
-        LOGGER.debug(
-            "Scan prompt response returned",
-            scores=results_score,
-            elapsed_time_seconds=round(elapsed_time, 6),
-        )
-
-        return response
-
-    @app.post(
-        "/deobfuscate",
-        tags=["CodeCipher"],
-        response_model=DeobfuscateResponse,
-        status_code=status.HTTP_200_OK,
-        description="Деобфусцирует текст, обработанный с помощью CodeCipherObfuscator, используя информацию из vault",
-    )
-    async def deobfuscate_text(
-        request: DeobfuscateRequest,
-        _: Annotated[bool, Depends(check_auth)],
-        input_scanners: List[InputScanner] = Depends(input_scanners_func),
-    ) -> DeobfuscateResponse:
-        LOGGER.debug(
-            "Received deobfuscation request", 
-            session_id=request.session_id,
-            scanner=request.scanner
-        )
-        
-        # Ищем указанный сканер в списке доступных
-        code_cipher_scanner = None
-        for scanner in input_scanners:
-            if type(scanner).__name__ == request.scanner:
-                code_cipher_scanner = scanner
-                break
-        
-        if not code_cipher_scanner:
-            LOGGER.error(f"Scanner {request.scanner} not found")
-            return DeobfuscateResponse(
-                deobfuscated_text=request.text,
-                is_valid=False,
-                error=f"Сканер {request.scanner} не найден"
+        async def deobfuscate_text(
+            request: DeobfuscateRequest,
+            _: Annotated[bool, Depends(check_auth)],
+            input_scanners: List[InputScanner] = Depends(input_scanners_func),
+        ) -> DeobfuscateResponse:
+            LOGGER.debug(
+                "Received deobfuscation request",
+                session_id=request.session_id,
+                scanner=request.scanner
             )
-        
-        # Проверяем, что указанный сканер имеет метод deobfuscate
-        if not hasattr(code_cipher_scanner, "deobfuscate"):
-            LOGGER.error(f"Scanner {request.scanner} does not have deobfuscate method")
-            return DeobfuscateResponse(
-                deobfuscated_text=request.text,
-                is_valid=False,
-                error=f"Сканер {request.scanner} не поддерживает деобфускацию"
-            )
-        
-        try:
-            # Находим директорию сессии в vault
-            vault_dir = os.environ.get("VAULT_DIR", "/home/user/app/cipher_vault")
-            session_dir = os.path.join(vault_dir, request.session_id)
-            
-            if not os.path.exists(session_dir):
-                LOGGER.error(f"Session directory {session_dir} not found")
+
+            # Ищем указанный сканер в списке доступных
+            code_cipher_scanner = None
+            for scanner in input_scanners:
+                if type(scanner).__name__ == request.scanner:
+                    code_cipher_scanner = scanner
+                    break
+
+            if not code_cipher_scanner:
+                LOGGER.error(f"Scanner {request.scanner} not found")
                 return DeobfuscateResponse(
                     deobfuscated_text=request.text,
                     is_valid=False,
-                    error=f"Сессия {request.session_id} не найдена"
+                    error=f"Сканер {request.scanner} не найден"
                 )
-            
-            # Устанавливаем директорию сессии для сканера
-            code_cipher_scanner.current_session_dir = Path(session_dir)
-            
-            # Выполняем деобфускацию
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                loop = asyncio.get_event_loop()
-                start_time = time.time()
-                deobfuscated_text = await asyncio.wait_for(
-                    loop.run_in_executor(
-                        executor,
-                        code_cipher_scanner.deobfuscate,
-                        request.text
-                    ),
-                    timeout=config.app.scan_output_timeout,
-                )
-                
-                elapsed_time = time.time() - start_time
-                LOGGER.debug(
-                    "Deobfuscation completed",
-                    elapsed_time_seconds=round(elapsed_time, 6),
-                )
-                
+
+            # Проверяем, что указанный сканер имеет метод deobfuscate
+            if not hasattr(code_cipher_scanner, "deobfuscate"):
+                LOGGER.error(f"Scanner {request.scanner} does not have deobfuscate method")
                 return DeobfuscateResponse(
-                    deobfuscated_text=deobfuscated_text,
-                    is_valid=True,
-                    error=None
+                    deobfuscated_text=request.text,
+                    is_valid=False,
+                    error=f"Сканер {request.scanner} не поддерживает деобфускацию"
                 )
-        except asyncio.TimeoutError:
-            raise HTTPException(
-                status_code=status.HTTP_408_REQUEST_TIMEOUT, 
-                detail="Timeout during deobfuscation"
+
+            try:
+                # Находим директорию сессии в vault
+                vault_dir = os.environ.get("VAULT_DIR", "/home/user/app/cipher_vault")
+                session_dir = os.path.join(vault_dir, request.session_id)
+
+                if not os.path.exists(session_dir):
+                    LOGGER.error(f"Session directory {session_dir} not found")
+                    return DeobfuscateResponse(
+                        deobfuscated_text=request.text,
+                        is_valid=False,
+                        error=f"Сессия {request.session_id} не найдена"
+                    )
+
+                # Устанавливаем директорию сессии для сканера
+                code_cipher_scanner.current_session_dir = Path(session_dir)
+
+                # Выполняем деобфускацию
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    loop = asyncio.get_event_loop()
+                    start_time = time.time()
+                    deobfuscated_text = await asyncio.wait_for(
+                        loop.run_in_executor(
+                            executor,
+                            code_cipher_scanner.deobfuscate,
+                            request.text
+                        ),
+                        timeout=config.app.scan_output_timeout,
+                    )
+
+                    elapsed_time = time.time() - start_time
+                    LOGGER.debug(
+                        "Deobfuscation completed",
+                        elapsed_time_seconds=round(elapsed_time, 6),
+                    )
+
+                    return DeobfuscateResponse(
+                        deobfuscated_text=deobfuscated_text,
+                        is_valid=True,
+                        error=None
+                    )
+            except asyncio.TimeoutError:
+                raise HTTPException(
+                    status_code=status.HTTP_408_REQUEST_TIMEOUT,
+                    detail="Timeout during deobfuscation"
+                )
+            except Exception as e:
+                LOGGER.error(f"Error during deobfuscation: {str(e)}")
+                return DeobfuscateResponse(
+                    deobfuscated_text=request.text,
+                    is_valid=False,
+                    error=f"Ошибка деобфускации: {str(e)}"
+                )
+
+    @app.post(
+        "/scan/image",
+        tags=["Analyze"],
+        response_model=ScanImageResponse,
+        status_code=status.HTTP_200_OK,
+        description="Scan an image for confidential data using OCR+YOLO and redact matches",
+    )
+    async def submit_scan_image(
+        request: ScanImageRequest,
+        _: Annotated[bool, Depends(check_auth)],
+    ) -> ScanImageResponse:
+        try:
+            # Decode base64
+            try:
+                image_bytes = base64.b64decode(request.image_base64)
+            except Exception:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid base64 image")
+
+            scanner = ConfidentialImageScanner(
+                patterns=request.patterns if request.patterns else None,
+                redact_mode=request.redact_mode or "partial",
+                yolo_model_path=request.yolo_model_path or None,
             )
+
+            redacted_b64, is_valid, risk, meta = await asyncio.to_thread(
+                scanner.scan_image, image_bytes
+            )
+
+            return ScanImageResponse(
+                is_valid=is_valid,
+                risk=risk,
+                redacted_image_base64=redacted_b64,
+                detections=meta.get("detections", []),
+                width=meta.get("width", 0),
+                height=meta.get("height", 0),
+            )
+        except DependencyError as de:
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(de))
         except Exception as e:
-            LOGGER.error(f"Error during deobfuscation: {str(e)}")
-            return DeobfuscateResponse(
-                deobfuscated_text=request.text,
-                is_valid=False,
-                error=f"Ошибка деобфускации: {str(e)}"
-            )
+            LOGGER.exception("Image scan failed", error=str(e))
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Image scan failed")
 
     if config.metrics and config.metrics.exporter == "prometheus":
 

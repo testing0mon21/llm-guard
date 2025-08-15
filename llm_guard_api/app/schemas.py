@@ -3,6 +3,36 @@ from typing import Dict, List
 from pydantic import BaseModel, Field
 
 
+class ScanImageRequest(BaseModel):
+    image_base64: str = Field(title="Base64-encoded image (PNG/JPEG)")
+    patterns: List[str] = Field(title="Custom regex patterns", default=[])
+    redact_mode: str = Field(title="Redaction mode: partial|full", default="partial")
+    yolo_model_path: str = Field(title="Path to YOLO11 model (optional)", default="")
+
+
+class DetectionBBox(BaseModel):
+    x1: int
+    y1: int
+    x2: int
+    y2: int
+
+
+class DetectionItem(BaseModel):
+    pattern: str
+    text: str
+    confidence: float
+    bbox: DetectionBBox
+
+
+class ScanImageResponse(BaseModel):
+    is_valid: bool = Field(title="Whether the image is safe")
+    risk: float = Field(title="Risk score")
+    redacted_image_base64: str = Field(title="Redacted image in base64 (PNG)")
+    detections: List[DetectionItem] = Field(title="Detections", default=[])
+    width: int
+    height: int
+
+
 class ScanPromptRequest(BaseModel):
     prompt: str = Field(title="Prompt")
     scanners_suppress: List[str] = Field(title="Scanners to suppress", default=[])

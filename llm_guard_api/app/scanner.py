@@ -6,24 +6,49 @@ import structlog
 import torch
 from opentelemetry import metrics
 
-from llm_guard import input_scanners, output_scanners
-from llm_guard.input_scanners.anonymize_helpers import DEBERTA_AI4PRIVACY_v2_CONF
-from llm_guard.input_scanners.ban_code import MODEL_SM as BAN_CODE_MODEL
-from llm_guard.input_scanners.ban_competitors import MODEL_V1 as BAN_COMPETITORS_MODEL
-from llm_guard.input_scanners.ban_topics import MODEL_DEBERTA_BASE_V2 as BAN_TOPICS_MODEL
-from llm_guard.input_scanners.base import Scanner as InputScanner
-from llm_guard.input_scanners.code import DEFAULT_MODEL as CODE_MODEL
-from llm_guard.input_scanners.gibberish import DEFAULT_MODEL as GIBBERISH_MODEL
-from llm_guard.input_scanners.language import DEFAULT_MODEL as LANGUAGE_MODEL
-from llm_guard.input_scanners.prompt_injection import V2_MODEL as PROMPT_INJECTION_MODEL
-from llm_guard.input_scanners.toxicity import DEFAULT_MODEL as TOXICITY_MODEL
-from llm_guard.model import Model
-from llm_guard.output_scanners.base import Scanner as OutputScanner
-from llm_guard.output_scanners.bias import DEFAULT_MODEL as BIAS_MODEL
-from llm_guard.output_scanners.malicious_urls import DEFAULT_MODEL as MALICIOUS_URLS_MODEL
-from llm_guard.output_scanners.no_refusal import DEFAULT_MODEL as NO_REFUSAL_MODEL
-from llm_guard.output_scanners.relevance import MODEL_EN_BGE_SMALL as RELEVANCE_MODEL
-from llm_guard.vault import Vault
+try:
+    from llm_guard import input_scanners, output_scanners
+    from llm_guard.input_scanners.anonymize_helpers import DEBERTA_AI4PRIVACY_v2_CONF
+    from llm_guard.input_scanners.ban_code import MODEL_SM as BAN_CODE_MODEL
+    from llm_guard.input_scanners.ban_competitors import MODEL_V1 as BAN_COMPETITORS_MODEL
+    from llm_guard.input_scanners.ban_topics import MODEL_DEBERTA_BASE_V2 as BAN_TOPICS_MODEL
+    from llm_guard.input_scanners.base import Scanner as InputScanner
+    from llm_guard.input_scanners.code import DEFAULT_MODEL as CODE_MODEL
+    from llm_guard.input_scanners.gibberish import DEFAULT_MODEL as GIBBERISH_MODEL
+    from llm_guard.input_scanners.language import DEFAULT_MODEL as LANGUAGE_MODEL
+    from llm_guard.input_scanners.prompt_injection import V2_MODEL as PROMPT_INJECTION_MODEL
+    from llm_guard.input_scanners.toxicity import DEFAULT_MODEL as TOXICITY_MODEL
+    from llm_guard.model import Model
+    from llm_guard.output_scanners.base import Scanner as OutputScanner
+    from llm_guard.output_scanners.bias import DEFAULT_MODEL as BIAS_MODEL
+    from llm_guard.output_scanners.malicious_urls import DEFAULT_MODEL as MALICIOUS_URLS_MODEL
+    from llm_guard.output_scanners.no_refusal import DEFAULT_MODEL as NO_REFUSAL_MODEL
+    from llm_guard.output_scanners.relevance import MODEL_EN_BGE_SMALL as RELEVANCE_MODEL
+    from llm_guard.vault import Vault
+
+    LLM_GUARD_AVAILABLE = True
+except Exception:  # pragma: no cover - optional dependency
+    input_scanners = None  # type: ignore
+    output_scanners = None  # type: ignore
+    DEBERTA_AI4PRIVACY_v2_CONF = {}  # type: ignore
+    BAN_CODE_MODEL = None  # type: ignore
+    BAN_COMPETITORS_MODEL = None  # type: ignore
+    BAN_TOPICS_MODEL = None  # type: ignore
+    InputScanner = object  # type: ignore
+    CODE_MODEL = None  # type: ignore
+    GIBBERISH_MODEL = None  # type: ignore
+    LANGUAGE_MODEL = None  # type: ignore
+    PROMPT_INJECTION_MODEL = None  # type: ignore
+    TOXICITY_MODEL = None  # type: ignore
+    Model = object  # type: ignore
+    OutputScanner = object  # type: ignore
+    BIAS_MODEL = None  # type: ignore
+    MALICIOUS_URLS_MODEL = None  # type: ignore
+    NO_REFUSAL_MODEL = None  # type: ignore
+    RELEVANCE_MODEL = None  # type: ignore
+    Vault = object  # type: ignore
+
+    LLM_GUARD_AVAILABLE = False
 
 from .config import ScannerConfig
 from .util import get_resource_utilization
@@ -45,6 +70,9 @@ def get_input_scanners(scanners: List[ScannerConfig], vault: Vault) -> List[Inpu
     Load input scanners from the configuration file.
     """
 
+    if not LLM_GUARD_AVAILABLE:
+        return []
+
     input_scanners_loaded = []
     for scanner in scanners:
         LOGGER.debug("Loading input scanner", scanner=scanner.type, **get_resource_utilization())
@@ -63,6 +91,9 @@ def get_output_scanners(scanners: List[ScannerConfig], vault: Vault) -> List[Out
     """
     Load output scanners from the configuration file.
     """
+    if not LLM_GUARD_AVAILABLE:
+        return []
+
     output_scanners_loaded = []
     for scanner in scanners:
         LOGGER.debug("Loading output scanner", scanner=scanner.type, **get_resource_utilization())
@@ -80,6 +111,9 @@ def get_output_scanners(scanners: List[ScannerConfig], vault: Vault) -> List[Out
 def _configure_model(model: Model, scanner_config: Optional[Dict]):
     if scanner_config is None:
         scanner_config = {}
+
+    if not LLM_GUARD_AVAILABLE:
+        return
 
     if "model_path" in scanner_config and scanner_config["model_path"] is not None:
         model.path = scanner_config["model_path"]
@@ -110,6 +144,9 @@ def _get_input_scanner(
     *,
     vault: Vault,
 ):
+    if not LLM_GUARD_AVAILABLE:
+        return None
+
     if scanner_config is None:
         scanner_config = {}
 
@@ -173,6 +210,9 @@ def _get_output_scanner(
     *,
     vault: Vault,
 ):
+    if not LLM_GUARD_AVAILABLE:
+        return None
+
     if scanner_config is None:
         scanner_config = {}
 

@@ -6,7 +6,11 @@ from typing import Dict, Literal, TextIO
 import psutil
 import structlog
 
-from llm_guard.util import configure_logger as configure_llm_guard_logger
+try:
+    from llm_guard.util import configure_logger as configure_llm_guard_logger
+except Exception:  # pragma: no cover - optional dependency
+    def configure_llm_guard_logger(level, render_json, stream):
+        pass
 
 LOG_LEVELS = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 EXTERNAL_LOGGERS = {
