@@ -27,10 +27,10 @@ PATTERN_STYLES: Dict[str, Dict[str, Any]] = {
 DEFAULT_STYLE = {"label": "Sensitive"}
 
 # Colors (BGR)
-MASK_FILL_COLOR = (0, 0, 0)          # black mask fill
-LABEL_BG_COLOR = (0, 0, 0)           # black label bar background
-LABEL_TEXT_COLOR = (255, 255, 255)   # white label text
-LABEL_SHADOW_COLOR = (0, 0, 0)       # black shadow for text
+MASK_FILL_COLOR = (0, 0, 255)         # red mask fill
+LABEL_BG_COLOR = (0, 0, 255)          # red label bar background
+LABEL_TEXT_COLOR = (255, 255, 255)    # white label text
+LABEL_SHADOW_COLOR = (0, 0, 0)        # black shadow for text
 
 
 class ConfidentialImageScanner:
