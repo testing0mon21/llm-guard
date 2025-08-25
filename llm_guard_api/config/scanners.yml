@@ -50,6 +50,13 @@ input_scanners:
       homoglyph_probability: 0.1
       zero_width_probability: 0.06
       tag_prefix: "<tl:v1"
+
+  # Эфемерное подстановочное "шифрование" с инструкциями для LLM по расшифровке
+  - type: EphemeralSubstitutionObfuscator
+    params:
+      time_step_seconds: 300
+      ttl_seconds: 300
+      include_header: true
   
   # Добавляем сканер обфускации кода
   - type: CodeCipherObfuscator

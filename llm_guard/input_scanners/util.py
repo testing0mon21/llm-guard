@@ -18,6 +18,7 @@ from .sentiment import Sentiment
 from .token_limit import TokenLimit
 from .toxicity import Toxicity
 from .timelock_obfuscator import TimeLockObfuscator
+from .ephemeral_cipher import EphemeralSubstitutionObfuscator
 
 
 def get_scanner_by_name(scanner_name: str, scanner_config: dict | None = None) -> Scanner:
@@ -84,5 +85,8 @@ def get_scanner_by_name(scanner_name: str, scanner_config: dict | None = None) -
 
     if scanner_name == "TimeLockObfuscator":
         return TimeLockObfuscator(**scanner_config)
+
+    if scanner_name == "EphemeralSubstitutionObfuscator":
+        return EphemeralSubstitutionObfuscator(**scanner_config)
 
     raise ValueError(f"Unknown scanner name: {scanner_name}")
