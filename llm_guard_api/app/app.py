@@ -419,6 +419,23 @@ def register_routes(
                 if type(scanner).__name__ not in request.scanners_suppress
             ]
 
+        # Produce a sanitized (obfuscated) prompt by running scanners sequentially
+        # that transform the input (Analyze endpoint already does this, but here we
+        # keep the original contract and add sanitized_prompt optionally).
+        sanitized_prompt_seq = request.prompt
+        try:
+            for scanner in input_scanners:
+                try:
+                    sp, is_valid, _ = scanner.scan(sanitized_prompt_seq)
+                    # only accept transformation if still valid
+                    if is_valid and isinstance(sp, str):
+                        sanitized_prompt_seq = sp
+                except Exception:
+                    # ignore transformation errors to keep endpoint resilient
+                    pass
+        except Exception:
+            pass
+
         result_is_valid = True
         results_score = {}
 
@@ -450,6 +467,7 @@ def register_routes(
         response = ScanPromptResponse(
             is_valid=result_is_valid,
             scanners=results_score,
+            sanitized_prompt=sanitized_prompt_seq if sanitized_prompt_seq != request.prompt else None,
         )
 
         elapsed_time = time.time() - start_time

@@ -11,6 +11,7 @@ class ScanPromptRequest(BaseModel):
 class ScanPromptResponse(BaseModel):
     is_valid: bool = Field(title="Whether the prompt is safe")
     scanners: Dict[str, float] = Field(title="Risk scores of individual scanners")
+    sanitized_prompt: str | None = Field(title="Sanitized prompt (if produced)", default=None)
 
 
 class AnalyzePromptRequest(ScanPromptRequest):
