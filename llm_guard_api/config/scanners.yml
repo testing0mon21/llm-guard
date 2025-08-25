@@ -42,6 +42,15 @@ input_scanners:
       match_type: search
       redact: true
   
+  # Обфускация обычных промптов с временной меткой (TTL+HMAC)
+  - type: TimeLockObfuscator
+    params:
+      ttl_seconds: 300
+      time_step_seconds: 60
+      homoglyph_probability: 0.1
+      zero_width_probability: 0.06
+      tag_prefix: "<tl:v1"
+  
   # Добавляем сканер обфускации кода
   - type: CodeCipherObfuscator
     params:

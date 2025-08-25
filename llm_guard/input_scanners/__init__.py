@@ -18,6 +18,7 @@ from .sentiment import Sentiment
 from .token_limit import TokenLimit
 from .toxicity import Toxicity
 from .util import get_scanner_by_name
+from .timelock_obfuscator import TimeLockObfuscator
 
 __all__ = [
     "Anonymize",
@@ -37,5 +38,6 @@ __all__ = [
     "Sentiment",
     "TokenLimit",
     "Toxicity",
+    "TimeLockObfuscator",
     "get_scanner_by_name",
 ]
