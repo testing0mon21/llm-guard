@@ -17,6 +17,7 @@ from .secrets import Secrets
 from .sentiment import Sentiment
 from .token_limit import TokenLimit
 from .toxicity import Toxicity
+from .time_based_encryption import TimeBasedEncryption
 from .util import get_scanner_by_name
 
 __all__ = [
@@ -37,5 +38,6 @@ __all__ = [
     "Sentiment",
     "TokenLimit",
     "Toxicity",
+    "TimeBasedEncryption",
     "get_scanner_by_name",
 ]
