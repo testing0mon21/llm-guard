@@ -1,0 +1,66 @@
+# Конфигурация для системы временного шифрования и обфускации промптов
+
+temporal_encryption:
+  # Временное окно в минутах для действия ключей
+  time_window_minutes: 30
+  
+  # Длина соли для генерации ключей
+  salt_length: 32
+  
+  # Максимальное количество эфемерных ключей в памяти
+  max_ephemeral_keys: 1000
+  
+  # Время жизни кэша ответов LLM в секундах
+  response_cache_ttl: 300
+
+llm_providers:
+  # Настройки для OpenAI
+  openai:
+    enabled: true
+    api_key: ${OPENAI_API_KEY}
+    default_model: "gpt-3.5-turbo"
+    timeout: 60
+    max_retries: 3
+    
+  # Настройки для Anthropic
+  anthropic:
+    enabled: true
+    api_key: ${ANTHROPIC_API_KEY}
+    default_model: "claude-3-5-sonnet-20241022"
+    timeout: 60
+    max_retries: 3
+    
+  # Настройки для локальных LLM
+  local:
+    enabled: false
+    base_url: "http://localhost:11434"
+    default_model: "llama2"
+    timeout: 120
+    
+security:
+  # Мастер-ключ для временного шифрования (рекомендуется задавать через переменные окружения)
+  master_key: ${TEMPORAL_MASTER_KEY}
+  
+  # Включить дополнительное логирование безопасности
+  audit_logging: true
+  
+  # Автоматическая очистка истекших ключей (в минутах)
+  cleanup_interval: 5
+  
+monitoring:
+  # Метрики для Prometheus
+  prometheus:
+    enabled: true
+    metrics:
+      - temporal_keys_generated
+      - temporal_keys_expired
+      - ephemeral_keys_used
+      - llm_requests_obfuscated
+      - llm_requests_total
+      - llm_response_time
+      
+  # Логирование
+  logging:
+    level: "INFO"
+    format: "json"
+    include_request_id: true

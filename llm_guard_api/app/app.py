@@ -1,7 +1,9 @@
 import asyncio
 import concurrent.futures
+import json
 import os
 import time
+from pathlib import Path
 from typing import Annotated, Callable, List
 
 import structlog
@@ -49,7 +51,15 @@ from .schemas import (
     ScanPromptResponse,
     DeobfuscateRequest,
     DeobfuscateResponse,
+    ObfuscatePromptRequest,
+    ObfuscatePromptResponse,
+    DeobfuscateResponseRequest,
+    DeobfuscateResponseResponse,
+    LLMProxyRequest,
+    LLMProxyResponse,
 )
+from .temporal_crypto import get_prompt_obfuscator
+from .llm_providers import get_llm_proxy
 from .util import configure_logger
 from .version import __version__
 
@@ -553,6 +563,218 @@ def register_routes(
                 deobfuscated_text=request.text,
                 is_valid=False,
                 error=f"Ошибка деобфускации: {str(e)}"
+            )
+
+    @app.post(
+        "/scan/prompt/obfuscate",
+        tags=["Temporal Encryption"],
+        response_model=ObfuscatePromptResponse,
+        status_code=status.HTTP_200_OK,
+        description="Обфусцирует промпт с временным шифрованием для безопасной передачи LLM провайдерам",
+    )
+    async def obfuscate_prompt(
+        request: ObfuscatePromptRequest,
+        _: Annotated[bool, Depends(check_auth)],
+    ) -> ObfuscatePromptResponse:
+        LOGGER.debug(
+            "Received obfuscate prompt request", 
+            session_id=request.session_id,
+            ttl_minutes=request.ttl_minutes,
+            use_ephemeral=request.use_ephemeral
+        )
+        
+        try:
+            obfuscator = get_prompt_obfuscator()
+            
+            # Обфусцируем промпт
+            obfuscated_data = obfuscator.obfuscate_prompt(
+                request.prompt,
+                request.session_id,
+                request.ttl_minutes,
+                request.use_ephemeral
+            )
+            
+            # Создаем инструкции для LLM
+            llm_instructions = obfuscator.create_llm_instructions(request.ttl_minutes)
+            
+            return ObfuscatePromptResponse(
+                obfuscated_data=obfuscated_data,
+                session_id=request.session_id,
+                expires_at=obfuscated_data.get("expires_at", time.time() + request.ttl_minutes * 60),
+                llm_instructions=llm_instructions,
+                is_valid=True,
+                error=None
+            )
+            
+        except Exception as e:
+            LOGGER.error("Obfuscation failed", error=str(e))
+            return ObfuscatePromptResponse(
+                obfuscated_data={},
+                session_id=request.session_id,
+                expires_at=0,
+                llm_instructions="",
+                is_valid=False,
+                error=f"Ошибка обфускации: {str(e)}"
+            )
+
+    @app.post(
+        "/scan/prompt/deobfuscate_response",
+        tags=["Temporal Encryption"],
+        response_model=DeobfuscateResponseResponse,
+        status_code=status.HTTP_200_OK,
+        description="Деобфусцирует ответ от LLM провайдера",
+    )
+    async def deobfuscate_llm_response(
+        request: DeobfuscateResponseRequest,
+        _: Annotated[bool, Depends(check_auth)],
+    ) -> DeobfuscateResponseResponse:
+        LOGGER.debug(
+            "Received deobfuscate response request", 
+            session_id=request.session_id
+        )
+        
+        try:
+            obfuscator = get_prompt_obfuscator()
+            
+            # Деобфусцируем ответ
+            deobfuscated_response, success, message = obfuscator.deobfuscate_response(
+                request.obfuscated_response,
+                request.session_id
+            )
+            
+            return DeobfuscateResponseResponse(
+                deobfuscated_response=deobfuscated_response or request.obfuscated_response,
+                is_valid=success,
+                error=message if not success else None
+            )
+            
+        except Exception as e:
+            LOGGER.error("Response deobfuscation failed", error=str(e))
+            return DeobfuscateResponseResponse(
+                deobfuscated_response=request.obfuscated_response,
+                is_valid=False,
+                error=f"Ошибка деобфускации ответа: {str(e)}"
+            )
+
+    @app.post(
+        "/llm/proxy",
+        tags=["LLM Proxy"],
+        response_model=LLMProxyResponse,
+        status_code=status.HTTP_200_OK,
+        description="Прокси для безопасного общения с LLM провайдерами с обфускацией промптов",
+    )
+    async def llm_proxy_request(
+        request: LLMProxyRequest,
+        _: Annotated[bool, Depends(check_auth)],
+    ) -> LLMProxyResponse:
+        LOGGER.debug(
+            "Received LLM proxy request", 
+            session_id=request.session_id,
+            provider=request.llm_provider,
+            model=request.model,
+            use_obfuscation=request.use_obfuscation
+        )
+        
+        try:
+            llm_proxy = get_llm_proxy()
+            prompt_to_send = request.prompt
+            was_obfuscated = False
+            
+            # Обфусцируем промпт если требуется
+            if request.use_obfuscation:
+                obfuscator = get_prompt_obfuscator()
+                
+                # Создаем обфусцированный промпт с инструкциями
+                obfuscated_data = obfuscator.obfuscate_prompt(
+                    request.prompt,
+                    request.session_id,
+                    request.ttl_minutes,
+                    True  # Используем эфемерные ключи
+                )
+                
+                llm_instructions = obfuscator.create_llm_instructions(request.ttl_minutes)
+                
+                # Формируем промпт с инструкциями по безопасности
+                prompt_to_send = f"""{llm_instructions}
+
+ОБФУСЦИРОВАННЫЕ ДАННЫЕ:
+{json.dumps(obfuscated_data, indent=2, ensure_ascii=False)}
+
+Пожалуйста, обработайте этот запрос с учетом временных ограничений безопасности."""
+                
+                was_obfuscated = True
+            
+            # Отправляем запрос к LLM провайдеру
+            response, tokens_used, success, error = await llm_proxy.send_request(
+                provider_name=request.llm_provider,
+                prompt=prompt_to_send,
+                model=request.model,
+                max_tokens=request.max_tokens,
+                temperature=request.temperature
+            )
+            
+            if not success:
+                return LLMProxyResponse(
+                    response="",
+                    session_id=request.session_id,
+                    was_obfuscated=was_obfuscated,
+                    tokens_used=0,
+                    is_valid=False,
+                    error=error
+                )
+            
+            # Если ответ был обфусцирован, можем попытаться его деобфусцировать
+            # В реальной реализации LLM может вернуть обфусцированный ответ
+            final_response = response
+            
+            return LLMProxyResponse(
+                response=final_response,
+                session_id=request.session_id,
+                was_obfuscated=was_obfuscated,
+                tokens_used=tokens_used,
+                is_valid=True,
+                error=None
+            )
+            
+        except Exception as e:
+            LOGGER.error("LLM proxy request failed", error=str(e))
+            return LLMProxyResponse(
+                response="",
+                session_id=request.session_id,
+                was_obfuscated=False,
+                tokens_used=0,
+                is_valid=False,
+                error=f"Ошибка прокси запроса: {str(e)}"
+            )
+
+    @app.get(
+        "/llm/providers",
+        tags=["LLM Proxy"],
+        description="Получает список доступных LLM провайдеров и их моделей",
+    )
+    async def get_llm_providers(
+        _: Annotated[bool, Depends(check_auth)],
+    ):
+        try:
+            llm_proxy = get_llm_proxy()
+            providers = llm_proxy.get_available_providers()
+            
+            return {
+                "providers": providers,
+                "total_providers": len(providers),
+                "supported_features": [
+                    "temporal_encryption",
+                    "ephemeral_keys", 
+                    "prompt_obfuscation",
+                    "response_caching"
+                ]
+            }
+            
+        except Exception as e:
+            LOGGER.error("Failed to get providers", error=str(e))
+            return JSONResponse(
+                {"error": f"Ошибка получения провайдеров: {str(e)}"}, 
+                status_code=500
             )
 
     if config.metrics and config.metrics.exporter == "prometheus":
