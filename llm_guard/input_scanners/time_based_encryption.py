@@ -62,16 +62,43 @@ class TimeBasedEncryption(Scanner):
     # ------------------------------------------------------------------
 
     def scan(self, prompt: str) -> Tuple[str, bool, float]:
-        """Encrypt *prompt* and always return it as *valid*.
+        """Encrypt *prompt* and return a self-contained instruction block.
 
-        The risk score is fixed to 0 because the goal of this scanner is
-        obfuscation, not risk assessment.
+        The returned *sanitized_prompt* contains:
+          • The base64 ciphertext
+          • Natural-language instructions describing how to derive the key and
+            decrypt the ciphertext.  These instructions are intended to be
+            sent verbatim to the downstream LLM so that it can recover the
+            original prompt *only* during the validity window defined by
+            ``ttl``.
         """
         bucket = self._current_bucket()
         key = self._derive_key(bucket, len(prompt.encode()))
         cipher_bytes = bytes(b ^ k for b, k in zip(prompt.encode(), key))
         cipher_b64 = base64.urlsafe_b64encode(cipher_bytes).decode()
-        return cipher_b64, True, 0.0
+
+        instructions = (
+            "You will receive an encrypted prompt that must be decrypted **inside the model** "
+            "before any further reasoning.  The ciphertext was produced using an XOR with a key "
+            "derived from the current *time bucket* (UNIX epoch seconds divided by {ttl}).\n\n"
+            "Decryption procedure:\n"
+            "1. Let `bucket = floor(current_time / {ttl})`.\n"
+            "2. Compute `digest = SHA-256( str(bucket) )` (32-byte array).\n"
+            "3. Repeat `digest` until its length matches the ciphertext length to obtain `key`.\n"
+            "4. XOR each ciphertext byte with the corresponding key byte.\n"
+            "5. Interpret the result as UTF-8 to recover the original prompt.\n"
+            "If UTF-8 decoding fails, retry with `bucket-1` to tolerate small clock skew.\n"
+        ).format(ttl=self._ttl)
+
+        wrapped_prompt = (
+            "## TIME-LOCKED PROMPT ##\n"
+            f"TTL_SECONDS={self._ttl}\n"
+            f"CIPHERTEXT_B64={cipher_b64}\n\n"
+            "### DECRYPTION INSTRUCTIONS ###\n" + instructions + "\n"
+            "### END ###"
+        )
+
+        return wrapped_prompt, True, 0.0
 
     # ------------------------------------------------------------------
     # Internal helpers
