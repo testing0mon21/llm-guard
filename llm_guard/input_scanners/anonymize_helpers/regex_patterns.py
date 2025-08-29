@@ -190,6 +190,38 @@ DEFAULT_REGEX_PATTERNS: list[DefaultRegexPatterns | RegexPatternsReuse] = [
         "score": 0.75,
         "languages": ["en"],
     },
+    {
+        "expressions": [r"\b[0-9]{9}\b"],
+        "name": "PASSPORT_US_RE",
+        "examples": ["123456789"],
+        "context": ["passport", "travel", "identification", "id"],
+        "score": 0.75,
+        "languages": ["en"],
+    },
+    {
+        "expressions": [r"\b(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}\b"],
+        "name": "IPV6_RE",
+        "examples": ["2001:0db8:85a3:0000:0000:8a2e:0370:7334"],
+        "context": ["ip", "address", "network"],
+        "score": 0.75,
+        "languages": ["en"],
+    },
+    {
+        "expressions": [r"\b\d{3}\s?\d{3}\s?\d{4}\b"],
+        "name": "NHS_NUMBER_UK_RE",
+        "examples": ["943 476 5919", "9434765919"],
+        "context": ["nhs", "health", "medical", "number"],
+        "score": 0.75,
+        "languages": ["en"],
+    },
+    {
+        "expressions": [r"\b\d{1,5}\s(?:[A-Za-z0-9#]+\s){0,5}(?:Street|St\.?|Avenue|Ave\.?|Road|Rd\.?|Boulevard|Blvd\.?|Lane|Ln\.?|Drive|Dr\.?)(?:\s[A-Za-z]{2})?\.?(?:,?\s?[A-Za-z]{2})?\b"],
+        "name": "STREET_ADDRESS_US_RE",
+        "examples": ["1600 Pennsylvania Avenue NW", "123 Main St."],
+        "context": ["address", "location", "residence"],
+        "score": 0.75,
+        "languages": ["en"],
+    },
 ]
 
 
