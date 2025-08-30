@@ -82,9 +82,19 @@ class Sensitive(Scanner):
         if output.strip() == "":
             return prompt, True, -1.0
 
+        # Auto-detect language (fallback to English)
+        try:
+            from langdetect import detect  # type: ignore
+
+            detected_lang = detect(output)
+            if detected_lang not in ALL_SUPPORTED_LANGUAGES:
+                detected_lang = "en"
+        except Exception:
+            detected_lang = "en"
+
         analyzer_results = self._analyzer.analyze(
             text=Anonymize.remove_single_quotes(output),
-            language="en",
+            language=detected_lang,
             entities=self._entity_types,
             score_threshold=self._threshold,
         )
