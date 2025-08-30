@@ -97,10 +97,15 @@ def _get_nlp_engine(languages: list[str] = ["en"]) -> NlpEngine:
     models = []
 
     for language in languages:
-        if not spacy.util.is_package(f"{language}_core_web_sm"):
+        model_name = f"{language}_core_web_sm"
+        # Special cases where spaCy model naming differs from <lang>_core_web_sm
+        if language == "ru":
+            model_name = "ru_core_news_sm"
+
+        if not spacy.util.is_package(model_name):
             # Use small spacy model, for faster inference.
-            download(f"{language}_core_web_sm")
-        models.append({"lang_code": language, "model_name": f"{language}_core_web_sm"})
+            download(model_name)
+        models.append({"lang_code": language, "model_name": model_name})
 
     configuration = {"nlp_engine_name": "spacy", "models": models}
 
